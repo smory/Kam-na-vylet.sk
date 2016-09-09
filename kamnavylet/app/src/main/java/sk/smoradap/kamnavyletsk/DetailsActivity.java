@@ -1,7 +1,6 @@
 package sk.smoradap.kamnavyletsk;
 
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -10,46 +9,54 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
+@EActivity(R.layout.activity_details)
 public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.OnDetailsListener {
 
     public static final String tag = "sk.smoradap.kamnavylet";
 
     private ImageRecyclerAdapter mImageAdapter;
-    private RecyclerView mImageRecyclerView;
-    private TextView mDetailsTextView;
-    private TextView mTitle;
-    private TextView mTownTextView;
-    private ImageView mBaseIcon;
-    private TextView mCategoryTextView;
+
+    @ViewById(R.id.rv_images_preview)
+    RecyclerView mImageRecyclerView;
+
+    @ViewById(R.id.tv_details_description)
+    TextView mDetailsTextView;
+
+    @ViewById(R.id.tv_name)
+    TextView mTitle;
+
+    @ViewById(R.id.tv_place)
+    TextView mTownTextView;
+
+    @ViewById(R.id.iv_base_icon)
+    ImageView mBaseIcon;
+
+    @ViewById(R.id.tv_category)
+    TextView mCategoryTextView;
 
     private String mUrl;
     private AttractionDetails mAttractionDetails;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+    @Bean
+    KamNaVyletApi api;
 
+
+    @AfterViews
+    public void testUrls(){
         mUrl = "http://www.kamnavylet.sk/atrakcia/hrad-lubovna-stara-lubovna";
-        //mUrl = "http://www.kamnavylet.sk/atrakcia/aquapark-tatralandia-liptovsky-mikulas";
-
-        mImageRecyclerView = (RecyclerView) findViewById(R.id.rv_images_preview);
-        mDetailsTextView = (TextView) findViewById(R.id.tv_details_description);
-        mTitle = (TextView) findViewById(R.id.tv_name);
-        mBaseIcon = (ImageView) findViewById(R.id.iv_base_icon);
-        mTownTextView = (TextView) findViewById(R.id.tv_place);
-        mCategoryTextView = (TextView) findViewById(R.id.tv_category);
     }
 
     @Override
@@ -60,11 +67,12 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             setUpViews(mAttractionDetails);
         } else {
             Log.i(tag, "Loading details.");
-            new KamNaVyletApi().loadDetails(mUrl, this);
+            api.loadDetails(mUrl, this);
         }
     }
 
-    private void setUpViews(AttractionDetails details){
+    @UiThread
+    void setUpViews(AttractionDetails details){
         mImageAdapter = new ImageRecyclerAdapter(this, details.getImageUrls());
         mImageRecyclerView.setAdapter(mImageAdapter);
         mDetailsTextView.setText(Html.fromHtml(details.getDescription()));
@@ -82,12 +90,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @Override
     public void onDetailsLoaded(AttractionDetails details) {
         mAttractionDetails = details;
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setUpViews(mAttractionDetails);
-            }
-        });
+        setUpViews(mAttractionDetails);
     }
 
     @Override

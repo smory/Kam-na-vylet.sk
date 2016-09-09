@@ -1,5 +1,7 @@
 package sk.smoradap.kamnavyletsk.api;
 
+import org.androidannotations.annotations.EBean;
+
 import sk.smoradap.kamnavyletsk.model.Area;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.Category;
@@ -11,6 +13,7 @@ import java.util.List;
 /**
  * Created by smora on 01.09.2016.
  */
+@EBean
 public class KamNaVyletApi {
 
     public void search(final String place, final int distance, final Category category,
