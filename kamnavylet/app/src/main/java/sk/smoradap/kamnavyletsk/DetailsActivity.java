@@ -1,9 +1,14 @@
 package sk.smoradap.kamnavyletsk;
 
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +21,11 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
+import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
+import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
@@ -47,6 +54,21 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @ViewById(R.id.tv_category)
     TextView mCategoryTextView;
 
+    @ViewById
+    Toolbar toolbar;
+
+    @ViewById(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @ViewById(R.id.toolbar_name)
+    TextView toolbarName;
+
+    @ViewById(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
+    @ViewById(R.id.details_table)
+    DetailsTable detailsTable;
+
     private String mUrl;
     private AttractionDetails mAttractionDetails;
 
@@ -72,7 +94,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     }
 
     @UiThread
-    void setUpViews(AttractionDetails details){
+    void setUpViews(final AttractionDetails details){
         mImageAdapter = new ImageRecyclerAdapter(this, details.getImageUrls());
         mImageRecyclerView.setAdapter(mImageAdapter);
         mDetailsTextView.setText(Html.fromHtml(details.getDescription()));
@@ -84,6 +106,39 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
                 .bitmapTransform(new CropCircleTransformation(this))
                 .into(mBaseIcon);
 
+        setSupportActionBar(toolbar);
+        collapsingToolbarLayout.setTitle(details.getName());
+
+        //toolbarName.setText(details.getName());
+        /*appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                System.out.println(verticalOffset);
+                if(verticalOffset < -40){
+                    toolbarName.setText(details.getName());
+                    System.out.println("change   offset: " + verticalOffset);
+                } else if(verticalOffset > -40 || toolbarName.getText().equals(details.getName())) {
+                    toolbarName.setText("");
+                    System.out.println("change 1");
+                }
+
+            }
+        });*/
+
+        for(Map.Entry<String,String> entry : details.getDetailsMap().entrySet()){
+            detailsTable.addRow(entry.getKey(), entry.getValue());
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 
