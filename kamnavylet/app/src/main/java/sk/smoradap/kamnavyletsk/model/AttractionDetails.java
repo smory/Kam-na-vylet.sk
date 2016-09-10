@@ -1,8 +1,10 @@
 package sk.smoradap.kamnavyletsk.model;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,6 +25,7 @@ public class AttractionDetails {
     private String description;
     private List<String> imageUrls = new LinkedList<>();
     private List<NearbyAttraction> nearbyAttractions = new LinkedList<>();
+    private Map<String, String> detailsMap = new LinkedHashMap<>();
 
     public String getName() {
         return name;
@@ -134,6 +137,18 @@ public class AttractionDetails {
 
     public void addNearbyAttraction(NearbyAttraction nearbyAttraction){
         nearbyAttractions.add(nearbyAttraction);
+    }
+
+    public Map<String, String> getDetailsMap() {
+        return detailsMap;
+    }
+
+    public void setDetailsMap(Map<String, String> detailsMap) {
+        this.detailsMap = detailsMap;
+    }
+
+    public void addDetailsPair(String name, String value){
+        detailsMap.put(name, value);
     }
 
     @Override

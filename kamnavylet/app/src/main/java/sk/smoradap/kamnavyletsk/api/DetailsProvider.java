@@ -114,15 +114,17 @@ public class DetailsProvider {
                     ad.setEmail(value);
                     break;
                 case "GPS:":
-                    ad.setGps(value.replace(" mapa", ""));
+                    value = value.replace(" mapa", "");
+                    ad.setGps(value);
                     break;
                 case "Telefón:":
                     //System.out.println(e.select("div#phone").get(0).text());
-                    break;
+                    continue;
                 case "WWW:":
                     System.out.println(e.select("a").get(0).attr("href"));
                     ad.setWebSite(e.select("a").get(0).attr("href"));
             }
+            ad.addDetailsPair(info, value);
         }
 
 
