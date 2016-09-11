@@ -77,6 +77,10 @@ public class DetailsProvider {
         for(Element e : ele){
             desc += e.toString();
         }
+        desc = desc.replaceFirst("<p>", "");
+        desc = desc.replaceAll("<p>", "<br/><br/>");
+        desc = desc.replaceAll("<\\s*/p>", "").trim();
+
         System.out.println(desc);
         ad.setDescription(desc);
     }
