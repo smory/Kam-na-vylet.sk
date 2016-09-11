@@ -60,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_category"
                 android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false">
 
             </android.support.v7.widget.RecyclerView>
 

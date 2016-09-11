@@ -97,6 +97,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     void setUpViews(final AttractionDetails details){
         mImageAdapter = new ImageRecyclerAdapter(this, details.getImageUrls());
         mImageRecyclerView.setAdapter(mImageAdapter);
+        mImageRecyclerView.setNestedScrollingEnabled(false);
         mDetailsTextView.setText(Html.fromHtml(details.getDescription()));
         mTitle.setText(Html.fromHtml("<b>" + details.getName() + "</b>"));
         mTownTextView.setText(details.getTown());
@@ -107,7 +108,11 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
                 .into(mBaseIcon);
 
         setSupportActionBar(toolbar);
-        collapsingToolbarLayout.setTitle(details.getName());
+        //collapsingToolbarLayout.setTitle(details.getName());
+        collapsingToolbarLayout.setTitle(Html.fromHtml("<b>" + details.getName() + "</b>"));
+        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
+
 
         //toolbarName.setText(details.getName());
         /*appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
