@@ -79,6 +79,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @AfterViews
     public void testUrls(){
         mUrl = "http://www.kamnavylet.sk/atrakcia/hrad-lubovna-stara-lubovna";
+        mUrl = "http://www.kamnavylet.sk/atrakcia/hrad-branc-podbranc";
     }
 
     @Override
@@ -108,27 +109,10 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
                 .into(mBaseIcon);
 
         setSupportActionBar(toolbar);
-        //collapsingToolbarLayout.setTitle(details.getName());
+
         collapsingToolbarLayout.setTitle(Html.fromHtml("<b>" + details.getName() + "</b>"));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
-
-
-        //toolbarName.setText(details.getName());
-        /*appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                System.out.println(verticalOffset);
-                if(verticalOffset < -40){
-                    toolbarName.setText(details.getName());
-                    System.out.println("change   offset: " + verticalOffset);
-                } else if(verticalOffset > -40 || toolbarName.getText().equals(details.getName())) {
-                    toolbarName.setText("");
-                    System.out.println("change 1");
-                }
-
-            }
-        });*/
 
         for(Map.Entry<String,String> entry : details.getDetailsMap().entrySet()){
             detailsTable.addRow(entry.getKey(), entry.getValue());
