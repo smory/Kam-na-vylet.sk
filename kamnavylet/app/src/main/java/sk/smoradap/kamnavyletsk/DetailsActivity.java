@@ -1,5 +1,6 @@
 package sk.smoradap.kamnavyletsk;
 
+import android.animation.ObjectAnimator;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +10,19 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -41,6 +48,12 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
 
     @ViewById(R.id.tv_details_description)
     TextView mDetailsTextView;
+
+    @ViewById(R.id.tv_details_more_less)
+    TextView detailsMoreLessTextVew;
+
+    @ViewById(R.id.details_description_layout)
+    LinearLayout mDescrptionLayout;
 
     @ViewById(R.id.tv_name)
     TextView mTitle;
@@ -117,6 +130,25 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
         for(Map.Entry<String,String> entry : details.getDetailsMap().entrySet()){
             detailsTable.addRow(entry.getKey(), entry.getValue());
         }
+
+    }
+
+    @Click(R.id.details_description_layout)
+    void descriptionToggle(){
+
+        System.out.println("clicked....");
+
+        ObjectAnimator animator;
+        if(mDetailsTextView.getMaxLines() == 5){
+            animator = ObjectAnimator.ofInt(mDetailsTextView, "maxLines", 5, mDetailsTextView.getLineCount());
+            detailsMoreLessTextVew.setText(getString(R.string.less));
+        } else {
+            animator = ObjectAnimator.ofInt(mDetailsTextView, "maxLines", mDetailsTextView.getLineCount(), 5);
+            detailsMoreLessTextVew.setText(getString(R.string.more));
+        }
+
+        animator.setDuration(200);
+        animator.start();
 
     }
 
