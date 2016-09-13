@@ -1,14 +1,19 @@
 package sk.smoradap.kamnavyletsk;
 
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,8 +82,15 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @ViewById(R.id.details_table)
     DetailsTable detailsTable;
 
+    @ViewById(R.id.details_card)
+    CardView detailsCardView;
+
+    @ViewById(R.id.details_table_drop_icon)
+    ImageView detailsDropIcon;
+
     private String mUrl;
     private AttractionDetails mAttractionDetails;
+
 
     @Bean
     KamNaVyletApi api;
@@ -145,6 +157,39 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
 
         animator.setDuration(200);
         animator.start();
+
+    }
+
+    @Click(R.id.details_card)
+    public void togleDetailsTable(){
+
+        System.out.println("details card clicked");
+
+        if(detailsTable.getVisibility() == View.VISIBLE){
+            //detailsTable.setVisibility(View.GONE);
+            detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_180_back));
+            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    detailsTable.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            detailsTable.startAnimation(animation);
+        } else {
+            detailsTable.setVisibility(View.VISIBLE);
+            detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_180));
+            detailsTable.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down));
+        }
 
     }
 
