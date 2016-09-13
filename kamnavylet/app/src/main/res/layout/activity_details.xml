@@ -100,43 +100,52 @@
 
             </android.support.v7.widget.RecyclerView>
 
-            <LinearLayout
-                android:id="@+id/details_description_layout"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/rv_images_preview">
+                android:layout_below="@+id/rv_images_preview"
+                android:id="@+id/details_description_card">
 
-                <TextView
-                    android:id="@+id/tv_details_description"
+                <LinearLayout
+                    android:id="@+id/details_description_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:text="Medium Text"
-                    android:maxLines="5"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:visibility="visible"/>
+                    android:orientation="vertical"
+                    android:layout_below="@+id/rv_images_preview">
 
-                <TextView
-                    android:id="@+id/tv_details_more_less"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/more"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:visibility="visible"/>
+                    <TextView
+                        android:id="@+id/tv_details_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="Medium Text"
+                        android:maxLines="5"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:visibility="visible"/>
+
+                    <TextView
+                        android:id="@+id/tv_details_more_less"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/more"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:visibility="visible"/>
 
 
-            </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/details_separator"
-                android:layout_below="@+id/details_description_layout"
+                android:layout_below="@+id/details_description_card"
                 android:background="@drawable/line_separator"
                 android:layout_marginTop="8dp"/>
 
