@@ -2,6 +2,7 @@ package sk.smoradap.kamnavyletsk;
 
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,15 +27,21 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.AnimationRes;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
+import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
+import sk.smoradap.kamnavyletsk.gui.SearchItem;
+import sk.smoradap.kamnavyletsk.gui.SearchItem_;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
+import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 @EActivity(R.layout.activity_details)
 public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.OnDetailsListener {
@@ -88,6 +95,27 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @ViewById(R.id.details_table_drop_icon)
     ImageView detailsDropIcon;
 
+    @ViewById(R.id.nearby_item_layout)
+    LinearLayout nearbyAttrationsLayout;
+
+    @ViewById(R.id.nearby_card)
+    CardView nearbyCard;
+
+    @ViewById(R.id.nearby_drop_icon)
+    ImageView nearByDropIcon;
+
+    @AnimationRes(R.anim.rotate_180)
+    Animation rotate180Animation;
+
+    @AnimationRes(R.anim.rotate_180_back)
+    Animation rotate180backAnimation;
+
+    @AnimationRes(R.anim.slide_down)
+    Animation slideDownAnimation;
+
+    @AnimationRes(R.anim.slide_up)
+    Animation slideUpAnimation;
+
     private String mUrl;
     private AttractionDetails mAttractionDetails;
 
@@ -118,7 +146,9 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             setUpViews(mAttractionDetails);
         } else {
             Log.i(tag, "Loading details.");
-            api.loadDetails(mUrl, this);
+            Intent i = getIntent();
+            System.out.println(i.getStringExtra("URL"));
+            api.loadDetails(i.getStringExtra("URL") == null ? mUrl : i.getStringExtra("URL"), this);
         }
     }
 
@@ -141,6 +171,12 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             detailsTable.addRow(entry.getKey(), entry.getValue());
         }
 
+        if(!details.getNearbyAttractions().isEmpty()){
+            setUpNearbyAttractions(details.getNearbyAttractions());
+        }
+
+        nearbyAttrationsLayout.setVisibility(View.GONE);
+
     }
 
     @Click(R.id.details_description_layout)
@@ -160,8 +196,17 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
 
     }
 
+    @UiThread
+    public void setUpNearByDetails(AttractionDetails details, SearchItem item){
+        item.setName(details.getName());
+        item.setPlace(details.getTown());
+        if(!details.getImageUrls().isEmpty()){
+            item.setIcon(details.getImageUrls().get(0));
+        }
+    }
+
     @Click(R.id.details_card)
-    public void togleDetailsTable(){
+    public void toggleDetailsTable(){
 
         System.out.println("details card clicked");
 
@@ -169,20 +214,13 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             //detailsTable.setVisibility(View.GONE);
             detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_180_back));
             Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+            animation.setAnimationListener(new AnimationListenerAdapter() {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     detailsTable.setVisibility(View.GONE);
                 }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
             });
             detailsTable.startAnimation(animation);
         } else {
@@ -190,6 +228,68 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_180));
             detailsTable.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down));
         }
+
+    }
+
+    @Click(R.id.nearby_card)
+    public void toggleNearByItems(){
+        if(nearbyAttrationsLayout.getVisibility() == View.VISIBLE){
+
+            slideUpAnimation.setAnimationListener(new AnimationListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    nearbyAttrationsLayout.setVisibility(View.GONE);
+                }
+
+            });
+            slideUpAnimation.cancel();
+            nearbyAttrationsLayout.startAnimation(slideUpAnimation);
+            nearByDropIcon.startAnimation(rotate180backAnimation);
+
+        } else {
+            nearByDropIcon.startAnimation(rotate180Animation);
+            nearbyAttrationsLayout.setVisibility(View.VISIBLE);
+            nearbyAttrationsLayout.startAnimation(slideDownAnimation);
+
+        }
+
+    }
+
+    public void setUpNearbyAttractions(List<NearbyAttraction> attractions){
+        for(final NearbyAttraction nearbyAttraction : attractions){
+            final SearchItem item = SearchItem_.build(getApplicationContext());
+            item.setName(nearbyAttraction.getName());
+            item.setPlace(nearbyAttraction.getUrl());
+            nearbyAttrationsLayout.addView(item );
+            System.out.println("adding nearby item");
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), DetailsActivity_.class);
+                    i.putExtra("URL", nearbyAttraction.getUrl());
+                    startActivity(i);
+                }
+            });
+
+            KamNaVyletApi.OnDetailsListener listener = new KamNaVyletApi.OnDetailsListener() {
+                @Override
+                public void onDetailsLoaded(AttractionDetails details) {
+                    setUpNearByDetails(details, item);
+                }
+
+                @Override
+                public void onDetailsFailure(IOException e) {
+
+                }
+            };
+
+            api.loadDetails(nearbyAttraction.getUrl(), listener);
+
+            View v = new View(getApplicationContext());
+            //v.setBackgroundResource(R.drawable.line_separator);
+            nearbyAttrationsLayout.addView(v);
+        }
+
 
     }
 

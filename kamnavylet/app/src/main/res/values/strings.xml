@@ -3,4 +3,6 @@
     <string name="details">Detaily</string>
     <string name="more">viac...</string>
     <string name="less">menej...</string>
+    <string name="distance">vzdialenosť:</string>
+    <string name="nearby_attractions">Atrakcie v okolí</string>
 </resources>
