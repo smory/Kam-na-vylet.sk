@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -128,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
         mImageRecyclerView.setNestedScrollingEnabled(false);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
     }
 
@@ -286,8 +287,8 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             api.loadDetails(nearbyAttraction.getUrl(), listener);
 
             View v = new View(getApplicationContext());
-            //v.setBackgroundResource(R.drawable.line_separator);
-            nearbyAttrationsLayout.addView(v);
+            v.setBackgroundResource(R.drawable.line_separator);
+            //nearbyAttrationsLayout.addView(v);
         }
 
 

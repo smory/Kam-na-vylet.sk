@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +22,7 @@ import sk.smoradap.kamnavyletsk.R;
  * Created by smora on 14.09.2016.
  */
 @EViewGroup(R.layout.search_item_layout)
-public class SearchItem extends CardView{
+public class SearchItem extends LinearLayout{
 
     @ViewById(R.id.iv_base_icon)
     ImageView icon;
@@ -65,11 +66,6 @@ public class SearchItem extends CardView{
         setDistance(null);
         setCategory(null);
         setIcon(null);
-        setCardElevation(sk.smoradap.kamnavyletsk.utils.Utils.convertDpToPixel(4));
-//        setPadding(sk.smoradap.kamnavyletsk.utils.Utils.convertDpToPixel(8f),
-//                sk.smoradap.kamnavyletsk.utils.Utils.convertDpToPixel(8f),
-//                sk.smoradap.kamnavyletsk.utils.Utils.convertDpToPixel(8f),
-//                sk.smoradap.kamnavyletsk.utils.Utils.convertDpToPixel(8f));
 
         setBackgroundColor(getResources().getColor(android.R.color.white));
     }

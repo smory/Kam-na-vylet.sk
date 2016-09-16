@@ -5,6 +5,7 @@
     <dimen name="recycler_image_height">200dp</dimen>
     <dimen name="recycler_image_widht">266dp</dimen>
     <dimen name="basic_item_image_size">80dp</dimen>
+    <dimen name="search_item_image_size">60dp</dimen>
     <dimen name="item_vertical_padding">4dp</dimen>
 
     <dimen name="details_header_hight">172dp</dimen>
