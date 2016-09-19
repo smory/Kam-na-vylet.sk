@@ -10,4 +10,5 @@
 
     <dimen name="details_header_hight">172dp</dimen>
     <dimen name="details_category_layout_height">32dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

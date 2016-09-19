@@ -315,8 +315,10 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             @Override
             public boolean onQueryTextSubmit(String query) {
                 System.out.println("Query: " + query );
-                searchView.clearFocus();
-                return false;
+               Intent i = new Intent(DetailsActivity.this, SearchActivity_.class);
+                i.putExtra(SearchActivity_.SEARCH_TERM, query);
+                startActivity(i);
+                return true;
             }
 
             @Override
