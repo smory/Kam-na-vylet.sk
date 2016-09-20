@@ -151,8 +151,8 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
         } else {
             Log.i(tag, "Loading details.");
             Intent i = getIntent();
-            System.out.println(i.getStringExtra("URL"));
-            api.loadDetails(i.getStringExtra("URL") == null ? mUrl : i.getStringExtra("URL"), this);
+            System.out.println(i.getStringExtra(URL));
+            api.loadDetails(i.getStringExtra(URL) == null ? mUrl : i.getStringExtra(URL), this);
         }
     }
 
