@@ -38,7 +38,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         holder.item.setIcon(r.getFullImageUrl());
         holder.item.setName(r.getName());
         holder.item.setPlace(r.getTown());
-        
+
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

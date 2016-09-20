@@ -83,9 +83,6 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @ViewById(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
-    @ViewById(R.id.toolbar_name)
-    TextView toolbarName;
-
     @ViewById(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
 
@@ -168,7 +165,9 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
                 .bitmapTransform(new CropCircleTransformation(this))
                 .into(mBaseIcon);
 
-        collapsingToolbarLayout.setTitle(Html.fromHtml("<b>" + details.getName() + "</b>"));
+        //collapsingToolbarLayout.setTitle(Html.fromHtml("<b>" + details.getName() + "</b>"));
+        collapsingToolbarLayout.setTitle("");
+        toolbar.setTitle("");
 
         for(Map.Entry<String,String> entry : details.getDetailsMap().entrySet()){
             detailsTable.addRow(entry.getKey(), entry.getValue());
