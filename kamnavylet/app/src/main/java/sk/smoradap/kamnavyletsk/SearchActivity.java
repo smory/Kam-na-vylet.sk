@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -31,6 +33,9 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
 
     @ViewById(R.id.search_recycler)
     RecyclerView mRecyclerView;
+
+    @ViewById(R.id.progressLayout)
+    RelativeLayout mProgressLayout;
 
     @Bean
     KamNaVyletApi api;
@@ -60,6 +65,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
         SearchRecyclerAdapter adapter = new SearchRecyclerAdapter(this, results);
         mRecyclerView.setAdapter(adapter);
         System.out.println("Setting adapter");
+        mProgressLayout.setVisibility(View.GONE);
     }
 
     @Override

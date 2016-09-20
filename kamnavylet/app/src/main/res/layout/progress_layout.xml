@@ -16,6 +16,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/progress_text_view"
         android:layout_below="@+id/progressbar"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/searching"/>
 
 </RelativeLayout>
