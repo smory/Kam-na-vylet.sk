@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -40,6 +41,9 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @Bean
     KamNaVyletApi api;
 
+    @Extra(SEARCH_TERM)
+    String mSearchTerm;
+
 
     @AfterViews
     void setFab() {
@@ -56,7 +60,12 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @AfterViews
     public void performSearch(){
         Intent i = getIntent();
-        api.search(i.getStringExtra(SEARCH_TERM), 15, null, this);
+        api.search(mSearchTerm, 15, null, this);
+    }
+
+    @AfterViews
+    public void setUpToolbar(){
+        mToolbar.setTitle(mSearchTerm);
     }
 
     @Override
