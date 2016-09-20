@@ -49,6 +49,7 @@ import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.OnDetailsListener {
 
     public static final String tag = "sk.smoradap.kamnavylet";
+    public static final String URL = "URL";
 
     private ImageRecyclerAdapter mImageAdapter;
 
