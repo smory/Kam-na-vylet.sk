@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -104,6 +105,9 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @ViewById(R.id.nearby_drop_icon)
     ImageView nearByDropIcon;
 
+    @ViewById(R.id.progressLayout)
+    RelativeLayout progressLayout;
+
     @AnimationRes(R.anim.rotate_180)
     Animation rotate180Animation;
 
@@ -178,6 +182,8 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
         }
 
         nearbyAttrationsLayout.setVisibility(View.GONE);
+
+        progressLayout.setVisibility(View.GONE);
 
     }
 
