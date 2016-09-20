@@ -248,16 +248,6 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:id="@+id/progressLayout">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressbar"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+    <include layout="@layout/progress_layout"/>
 
 </android.support.design.widget.CoordinatorLayout>
