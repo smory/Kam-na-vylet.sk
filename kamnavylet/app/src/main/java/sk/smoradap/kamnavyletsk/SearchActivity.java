@@ -1,10 +1,16 @@
 package sk.smoradap.kamnavyletsk;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
+import android.support.annotation.RawRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,17 +22,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Arrays;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
 import sk.smoradap.kamnavyletsk.gui.SearchRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
+import sk.smoradap.kamnavyletsk.utils.Utils;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.OnSearchResultsListener {
@@ -48,6 +57,9 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @Extra(SEARCH_TERM)
     String mSearchTerm;
 
+    private SimpleCursorAdapter mSugestionAdapter;
+    private String[] suggestions;
+
 
     @AfterViews
     void setFab() {
@@ -65,6 +77,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     public void performSearch(){
         Intent i = getIntent();
         api.search(mSearchTerm, 15, null, this);
+        loadSuggestions();
     }
 
     @AfterViews
@@ -105,11 +118,57 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(suggestions != null){
+                    populateAdapter(newText);
+                }
                 return false;
+            }
+
+        });
+
+        createSuggestionsAdapter();
+        searchView.setSuggestionsAdapter(mSugestionAdapter);
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Cursor c = (Cursor) mSugestionAdapter.getItem(position);
+                System.out.println(c.getString(1));
+                mSearchTerm = c.getString(1);
+                searchView.setQuery(c.getString(1), true);
+                return true;
+            }
+
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                // Your code here
+                return true;
             }
         });
 
         return true;
+    }
+
+    private void populateAdapter(String query) {
+        final MatrixCursor c = new MatrixCursor(new String[]{ BaseColumns._ID, "name" });
+        for (int i=0; i<suggestions.length; i++) {
+            if (suggestions[i].toLowerCase().startsWith(query.toLowerCase())) {
+                c.addRow(new Object[]{i, suggestions[i]});
+                System.out.println("Adding row: " + i + ", " + suggestions[i]);
+            }
+        }
+        mSugestionAdapter.changeCursor(c);
+    }
+
+    @Background
+    void loadSuggestions(){
+        suggestions = Utils.loadRawTextResourceAsArray(this, R.raw.suggestions);
+    }
+
+    void createSuggestionsAdapter(){
+        final String[] from = new String[] {"name"};
+        final int[] to = new int[] {android.R.id.text1};
+        mSugestionAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
 
     @Override
