@@ -131,7 +131,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     private String mUrl;
 
     @Bean
-    KamNaVyletApi_ api;
+    KamNaVyletApi api;
 
 
     @AfterViews
