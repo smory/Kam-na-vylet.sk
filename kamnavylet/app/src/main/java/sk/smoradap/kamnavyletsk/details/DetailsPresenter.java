@@ -42,6 +42,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
 
     @Override
     public void onDetailsLoaded(AttractionDetails details) {
+        mAttractionDetails = details;
         mView.setBusy(true);
         mView.setDescription(details.getName(), details.getTown(), details.getImageUrls().get(0));
         mView.setImagePreviews(details.getImageUrls());

@@ -53,7 +53,8 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 @EActivity(R.layout.activity_details)
-public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
+public class DetailsActivity extends AppCompatActivity implements DetailsContract.View,
+        ImageRecyclerAdapter.OnImageClickedInterface {
 
     public static final String tag = "sk.smoradap.kamnavylet";
     public static final String URL = "URL";
@@ -316,7 +317,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override
     @UiThread
     public void setImagePreviews(List<String> urls) {
-        mImageAdapter = new ImageRecyclerAdapter(this, urls);
+        mImageAdapter = new ImageRecyclerAdapter(this, urls, this);
         mImageRecyclerView.setAdapter(mImageAdapter);
     }
 
@@ -395,5 +396,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override
     public void showCannotLoadData() {
 
+    }
+
+    @Override
+    public void imageClicked(int position) {
+        mPresenter.previewImagePicked(position);
     }
 }

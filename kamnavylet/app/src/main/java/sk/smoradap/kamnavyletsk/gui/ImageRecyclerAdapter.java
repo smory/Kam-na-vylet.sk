@@ -25,12 +25,14 @@ import sk.smoradap.kamnavyletsk.R;
  */
 public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder> {
 
-    List<String> mImageUrls;
-    Context mContext;
+    private List<String> mImageUrls;
+    private Context mContext;
+    private OnImageClickedInterface mCallback;
 
-    public ImageRecyclerAdapter(Context context, List<String> imageUrls){
+    public ImageRecyclerAdapter(Context context, List<String> imageUrls, OnImageClickedInterface callback){
         this.mImageUrls = imageUrls;
         mContext = context;
+        mCallback = callback;
     }
 
     @Override
@@ -63,11 +65,9 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Image clicked");
-                Intent i = new Intent(mContext.getApplicationContext(), ImageBrowseActivity_.class);
-                i.putExtra(ImageBrowseActivity_.IMAGE_URLS, (Serializable) mImageUrls);
-                i.putExtra(ImageBrowseActivity_.PAGER_POSITION, position);
-                mContext.startActivity(i);
+                if(mCallback != null){
+                    mCallback.imageClicked(position);
+                }
             }
         });
     }
@@ -89,6 +89,10 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             this.itemView = itemView;
         }
+    }
+
+    public interface OnImageClickedInterface{
+        void imageClicked(int position);
     }
 
 
