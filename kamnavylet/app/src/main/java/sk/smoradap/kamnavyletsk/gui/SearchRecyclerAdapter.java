@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.DetailsActivity_;
+import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 
 /**

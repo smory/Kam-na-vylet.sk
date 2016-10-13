@@ -33,10 +33,13 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
+import sk.smoradap.kamnavyletsk.api.KamNaVyletApi_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
@@ -50,10 +53,12 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 @EActivity(R.layout.activity_details)
-public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.OnDetailsListener {
+public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
 
     public static final String tag = "sk.smoradap.kamnavylet";
     public static final String URL = "URL";
+
+    DetailsContract.Presenter mPresenter;
 
     private ImageRecyclerAdapter mImageAdapter;
 
@@ -124,11 +129,17 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     Animation slideUpAnimation;
 
     private String mUrl;
-    private AttractionDetails mAttractionDetails;
-
 
     @Bean
-    KamNaVyletApi api;
+    KamNaVyletApi_ api;
+
+
+    @AfterViews
+    void createPresenter(){
+        if(mPresenter == null){
+            mPresenter = new DetailsPresenter(this);
+        }
+    }
 
     @AfterViews
     void configureViews(){
@@ -136,7 +147,6 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
-
     }
 
     @AfterViews
@@ -148,47 +158,11 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
     @Override
     public void onStart(){
         super.onStart();
-
-        if(mAttractionDetails != null){
-            setUpViews(mAttractionDetails);
-        } else {
-            Log.i(tag, "Loading details.");
-            Intent i = getIntent();
-            System.out.println(i.getStringExtra(URL));
-            api.loadDetails(i.getStringExtra(URL) == null ? mUrl : i.getStringExtra(URL), this);
-        }
+        mUrl =  getIntent().getStringExtra(URL) == null ? mUrl :  getIntent().getStringExtra(URL);
+        mPresenter.start(mUrl);
     }
 
-    @UiThread
-    void setUpViews(final AttractionDetails details){
-        mImageAdapter = new ImageRecyclerAdapter(this, details.getImageUrls());
-        mImageRecyclerView.setAdapter(mImageAdapter);
-        mDetailsTextView.setText(Html.fromHtml(details.getDescription()));
-        mTitle.setText(Html.fromHtml("<b>" + details.getName() + "</b>"));
-        mTownTextView.setText(details.getTown());
-        mCategoryTextView.setText(details.getCategory());
 
-        Glide.with(this).load(details.getImageUrls().get(0))
-                .bitmapTransform(new CropCircleTransformation(this))
-                .into(mBaseIcon);
-
-        //collapsingToolbarLayout.setTitle(Html.fromHtml("<b>" + details.getName() + "</b>"));
-        collapsingToolbarLayout.setTitle("");
-        toolbar.setTitle("");
-
-        for(Map.Entry<String,String> entry : details.getDetailsMap().entrySet()){
-            detailsTable.addRow(entry.getKey(), entry.getValue());
-        }
-
-        if(!details.getNearbyAttractions().isEmpty()){
-            setUpNearbyAttractions(details.getNearbyAttractions());
-        }
-
-        nearbyAttrationsLayout.setVisibility(View.GONE);
-
-        progressLayout.setVisibility(View.GONE);
-
-    }
 
     @Click(R.id.details_description_layout)
     void descriptionToggle(){
@@ -276,9 +250,7 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), DetailsActivity_.class);
-                    i.putExtra("URL", nearbyAttraction.getUrl());
-                    startActivity(i);
+                    mPresenter.nearByAttractionPicked(nearbyAttraction);
                 }
             });
 
@@ -342,13 +314,85 @@ public class DetailsActivity extends AppCompatActivity implements KamNaVyletApi.
 
 
     @Override
-    public void onDetailsLoaded(AttractionDetails details) {
-        mAttractionDetails = details;
-        setUpViews(mAttractionDetails);
+    @UiThread
+    public void setImagePreviews(List<String> urls) {
+        mImageAdapter = new ImageRecyclerAdapter(this, urls);
+        mImageRecyclerView.setAdapter(mImageAdapter);
     }
 
     @Override
-    public void onDetailsFailure(IOException e) {
-        e.printStackTrace();
+    @UiThread
+    public void setDetailsDescription(String text) {
+        mDetailsTextView.setText(Html.fromHtml(text));
+    }
+
+    @Override
+    @UiThread
+    public void setDescription(String mainTitle, String subTitle, String iconUrl) {
+        mTitle.setText(Html.fromHtml("<b>" + mainTitle + "</b>"));
+        mTownTextView.setText(subTitle);
+
+        Glide.with(this).load(iconUrl)
+                .bitmapTransform(new CropCircleTransformation(this))
+                .into(mBaseIcon);
+
+        collapsingToolbarLayout.setTitle("");
+        toolbar.setTitle("");
+    }
+
+    @Override
+    @UiThread
+    public void setCategory(String category) {
+        mCategoryTextView.setText(category);
+    }
+
+    @Override
+    @UiThread
+    public void setDetails(Map<String, String> details) {
+        detailsTable.removeAllViews();
+        for (Map.Entry<String, String> entry : details.entrySet()) {
+            detailsTable.addRow(entry.getKey(), entry.getValue());
+        }
+    }
+
+    @Override
+    @UiThread
+    public void setNearByAttractions(List<NearbyAttraction> nearbyAttractions) {
+        nearbyAttrationsLayout.removeAllViews();
+
+        if (!nearbyAttractions.isEmpty()) {
+            setUpNearbyAttractions(nearbyAttractions);
+        }
+
+        nearbyAttrationsLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNearbyAttractionDetails(NearbyAttraction nearbyAttraction) {
+        Intent i = new Intent(this, DetailsActivity_.class);
+        i.putExtra(DetailsActivity.URL, nearbyAttraction.getUrl());
+        startActivity(i);
+    }
+
+    @Override
+    public void showFullImagePreviews(List<String> urls, int startIndex) {
+        Intent i = new Intent(this, ImageBrowseActivity_.class);
+        i.putExtra(ImageBrowseActivity_.IMAGE_URLS, (Serializable) urls);
+        i.putExtra(ImageBrowseActivity_.PAGER_POSITION, startIndex);
+        startActivity(i);
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+        if(busy){
+            progressLayout.setVisibility(View.VISIBLE);
+        } else {
+            progressLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCannotLoadData() {
+
     }
 }
