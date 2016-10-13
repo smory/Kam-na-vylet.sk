@@ -182,14 +182,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     }
 
-    @UiThread
-    public void setUpNearByDetails(AttractionDetails details, SearchItem item){
-        item.setName(details.getName());
-        item.setPlace(details.getTown());
-        if(!details.getImageUrls().isEmpty()){
-            item.setIcon(details.getImageUrls().get(0));
-        }
-    }
 
     @Click(R.id.details_card)
     public void toggleDetailsTable(){
@@ -241,41 +233,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     }
 
-    public void setUpNearbyAttractions(List<NearbyAttraction> attractions){
-        for(final NearbyAttraction nearbyAttraction : attractions){
-            final SearchItem item = SearchItem_.build(getApplicationContext());
-            item.setName(nearbyAttraction.getName());
-            item.setPlace(nearbyAttraction.getUrl());
-            nearbyAttrationsLayout.addView(item );
-            System.out.println("adding nearby item");
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mPresenter.nearByAttractionPicked(nearbyAttraction);
-                }
-            });
-
-            KamNaVyletApi.OnDetailsListener listener = new KamNaVyletApi.OnDetailsListener() {
-                @Override
-                public void onDetailsLoaded(AttractionDetails details) {
-                    setUpNearByDetails(details, item);
-                }
-
-                @Override
-                public void onDetailsFailure(IOException e) {
-
-                }
-            };
-
-            api.loadDetails(nearbyAttraction.getUrl(), listener);
-
-            View v = new View(getApplicationContext());
-            v.setBackgroundResource(R.drawable.line_separator);
-            //nearbyAttrationsLayout.addView(v);
-        }
-
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -358,21 +315,39 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     @Override
     @UiThread
-    public void setNearByAttractions(List<NearbyAttraction> nearbyAttractions) {
+    public void setNearByAttractions(List<AttractionDetails> nearbyAttractions) {
         nearbyAttrationsLayout.removeAllViews();
 
-        if (!nearbyAttractions.isEmpty()) {
-            setUpNearbyAttractions(nearbyAttractions);
+        for(final AttractionDetails nearbyAttraction : nearbyAttractions){
+            final SearchItem item = SearchItem_.build(getApplicationContext());
+            item.setName(nearbyAttraction.getName());
+            item.setPlace(nearbyAttraction.getTown());
+
+            if(!nearbyAttraction.getImageUrls().isEmpty()){
+                item.setIcon(nearbyAttraction.getImageUrls().get(0));
+            }
+
+            nearbyAttrationsLayout.addView(item );
+            System.out.println("adding nearby item");
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPresenter.nearByAttractionPicked(nearbyAttraction);
+                }
+            });
+            View v = new View(getApplicationContext());
+            v.setBackgroundResource(R.drawable.line_separator);
+
         }
 
         nearbyAttrationsLayout.setVisibility(View.GONE);
     }
 
     @Override
-    public void showNearbyAttractionDetails(NearbyAttraction nearbyAttraction) {
+    public void showNearbyAttractionDetails(AttractionDetails nearbyAttraction) {
         Intent i = new Intent(this, DetailsActivity_.class);
-        i.putExtra(DetailsActivity.URL, nearbyAttraction.getUrl());
-        startActivity(i);
+        i.putExtra(DetailsActivity.URL, nearbyAttraction.getPhone());
+       // startActivity(i);
     }
 
     @Override

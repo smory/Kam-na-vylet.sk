@@ -3,6 +3,7 @@ package sk.smoradap.kamnavyletsk.details;
 import java.util.List;
 import java.util.Map;
 
+import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 /**
@@ -12,7 +13,7 @@ public interface DetailsContract {
 
     interface Presenter {
         void start(String url);
-        void nearByAttractionPicked(NearbyAttraction attraction);
+        void nearByAttractionPicked(AttractionDetails attraction);
         void previewImagePicked(int imageIndex);
     }
 
@@ -22,8 +23,8 @@ public interface DetailsContract {
         void setTitle(String mainTitle, String subTitle, String iconUrl);
         void setCategory(String category);
         void setDetails(Map<String, String> details);
-        void setNearByAttractions(List<NearbyAttraction> nearbyAttractions);
-        void showNearbyAttractionDetails(NearbyAttraction nearbyAttraction);
+        void setNearByAttractions(List<AttractionDetails> nearbyAttractions);
+        void showNearbyAttractionDetails(AttractionDetails nearbyAttraction);
         void showFullImagePreviews(List<String> urls, int startIndex);
 
         void setBusy(boolean busy);
