@@ -1,18 +1,16 @@
-package sk.smoradap.kamnavyletsk;
+package sk.smoradap.kamnavyletsk.details;
 
 import static org.junit.Assert.*;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
-import android.test.ApplicationTestCase;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.InstrumentationTestCase;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import sk.smoradap.kamnavyletsk.details.DetailsActivity;
 
 /**
  * Created by smora on 07.09.2016.

@@ -1,4 +1,4 @@
-package sk.smoradap.kamnavyletsk;
+package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import sk.smoradap.kamnavyletsk.DetailsActivity_;
+import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
