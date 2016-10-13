@@ -329,7 +329,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     @Override
     @UiThread
-    public void setDescription(String mainTitle, String subTitle, String iconUrl) {
+    public void setTitle(String mainTitle, String subTitle, String iconUrl) {
         mTitle.setText(Html.fromHtml("<b>" + mainTitle + "</b>"));
         mTownTextView.setText(subTitle);
 

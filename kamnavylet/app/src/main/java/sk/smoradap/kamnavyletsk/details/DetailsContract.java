@@ -19,7 +19,7 @@ public interface DetailsContract {
     interface View {
         void setImagePreviews(List<String> urls);
         void setDetailsDescription(String text);
-        void setDescription(String mainTitle, String subTitle, String iconUrl);
+        void setTitle(String mainTitle, String subTitle, String iconUrl);
         void setCategory(String category);
         void setDetails(Map<String, String> details);
         void setNearByAttractions(List<NearbyAttraction> nearbyAttractions);
