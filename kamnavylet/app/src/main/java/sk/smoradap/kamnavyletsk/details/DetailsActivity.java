@@ -383,6 +383,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     }
 
     @Override
+    @UiThread
     public void setBusy(boolean busy) {
         if(busy){
             progressLayout.setVisibility(View.VISIBLE);
