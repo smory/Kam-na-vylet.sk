@@ -1,5 +1,6 @@
 package sk.smoradap.kamnavyletsk.model;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.Set;
 /**
  * Created by smora on 01.09.2016.
  */
-public class AttractionDetails {
+public class AttractionDetails implements Serializable {
 
     private String name;
     private String category;

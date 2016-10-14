@@ -1,6 +1,7 @@
 package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,32 +25,26 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
-import sk.smoradap.kamnavyletsk.api.KamNaVyletApi_;
-import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
-import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.gui.SearchItem;
 import sk.smoradap.kamnavyletsk.gui.SearchItem_;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
-import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 @EActivity(R.layout.activity_details)
 public class DetailsActivity extends AppCompatActivity implements DetailsContract.View,
@@ -130,10 +124,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     Animation slideUpAnimation;
 
     private String mUrl;
-
-    @Bean
-    KamNaVyletApi api;
-
 
     @AfterViews
     void createPresenter(){
