@@ -346,8 +346,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override
     public void showNearbyAttractionDetails(AttractionDetails nearbyAttraction) {
         Intent i = new Intent(this, DetailsActivity_.class);
-        i.putExtra(DetailsActivity.URL, nearbyAttraction.getPhone());
-       // startActivity(i);
+        i.putExtra(DetailsActivity.URL, nearbyAttraction.getSourceUrl());
+        startActivity(i);
     }
 
     @Override
