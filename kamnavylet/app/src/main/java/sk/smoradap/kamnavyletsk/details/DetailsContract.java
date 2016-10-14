@@ -13,6 +13,7 @@ public interface DetailsContract {
 
     interface Presenter {
         void start(String url);
+        void start(AttractionDetails details);
         void nearByAttractionPicked(AttractionDetails attraction);
         void previewImagePicked(int imageIndex);
     }

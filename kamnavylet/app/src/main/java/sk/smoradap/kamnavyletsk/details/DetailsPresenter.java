@@ -35,6 +35,12 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     }
 
     @Override
+    public void start(AttractionDetails details){
+        mAttractionDetails = details;
+        setUpView(details);
+    }
+
+    @Override
     public void nearByAttractionPicked(AttractionDetails attraction) {
         mView.showNearbyAttractionDetails(attraction);
     }

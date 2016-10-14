@@ -52,6 +52,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     public static final String tag = "sk.smoradap.kamnavylet";
     public static final String URL = "URL";
+    public static final String DETAILS = "details";
 
     DetailsContract.Presenter mPresenter;
 
@@ -150,7 +151,13 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     public void onStart(){
         super.onStart();
         mUrl =  getIntent().getStringExtra(URL) == null ? mUrl :  getIntent().getStringExtra(URL);
-        mPresenter.start(mUrl);
+        AttractionDetails details = (AttractionDetails) getIntent().getSerializableExtra(DETAILS);
+        if(details != null){
+            mPresenter.start(details);
+        } else {
+            mPresenter.start(mUrl);
+        }
+
     }
 
 
@@ -336,7 +343,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override
     public void showNearbyAttractionDetails(AttractionDetails nearbyAttraction) {
         Intent i = new Intent(this, DetailsActivity_.class);
-        i.putExtra(DetailsActivity.URL, nearbyAttraction.getSourceUrl());
+        i.putExtra(DetailsActivity.DETAILS, nearbyAttraction);
         startActivity(i);
     }
 
