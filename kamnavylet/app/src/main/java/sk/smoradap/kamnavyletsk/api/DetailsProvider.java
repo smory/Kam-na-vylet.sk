@@ -20,6 +20,7 @@ public class DetailsProvider {
     public static AttractionDetails details(String url) throws IOException{
 
         AttractionDetails ad = new AttractionDetails();
+        ad.setSourceUrl(url);
 
         Document doc = null;
 

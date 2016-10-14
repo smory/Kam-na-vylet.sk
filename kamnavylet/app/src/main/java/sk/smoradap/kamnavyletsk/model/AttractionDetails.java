@@ -23,6 +23,7 @@ public class AttractionDetails {
     private String gps;
     private String webSite;
     private String description;
+    private String sourceUrl;
     private List<String> imageUrls = new LinkedList<>();
     private List<NearbyAttraction> nearbyAttractions = new LinkedList<>();
     private Map<String, String> detailsMap = new LinkedHashMap<>();
@@ -141,6 +142,14 @@ public class AttractionDetails {
 
     public Map<String, String> getDetailsMap() {
         return detailsMap;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
     }
 
     public void setDetailsMap(Map<String, String> detailsMap) {
