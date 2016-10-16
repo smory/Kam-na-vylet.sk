@@ -33,6 +33,15 @@ public class KamNaVyletApi {
         thread.start();
     }
 
+    public List<SearchResult> search(final String place, final int distance, final Category category){
+        try {
+            return SearchProvider.search(place, distance, category);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void loadDetails(final String url, final OnDetailsListener callback){
         Runnable r = new Runnable() {
             @Override
@@ -48,6 +57,16 @@ public class KamNaVyletApi {
         thread.start();
     }
 
+    public AttractionDetails loadDetails(final String url){
+        try {
+            return DetailsProvider.details(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     public void loadAreas(final OnAreaAvailableListener callback){
         Runnable r = new Runnable() {
             @Override
@@ -59,6 +78,10 @@ public class KamNaVyletApi {
         thread.start();
     }
 
+    public List<Area> loadAreas(){
+        return AreaProvider.loadAreas();
+    }
+
     public void loadCategories(final OnCategoryAvailableListener callback){
         Runnable r = new Runnable() {
             @Override
@@ -68,6 +91,10 @@ public class KamNaVyletApi {
         };
         Thread thread = new Thread(r);
         thread.start();
+    }
+
+    public List<Category> loadCategories(){
+        return CategoryProvider.loadCategories();
     }
 
     public interface OnSearchResultsListener{
