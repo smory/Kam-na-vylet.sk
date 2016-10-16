@@ -1,9 +1,11 @@
 package sk.smoradap.kamnavyletsk.model;
 
+import java.io.Serializable;
+
 /**
  * Created by smora on 02.09.2016.
  */
-public class NearbyAttraction {
+public class NearbyAttraction implements Serializable {
 
     private String name;
     private String Url;
