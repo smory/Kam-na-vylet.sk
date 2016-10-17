@@ -55,8 +55,12 @@ dependencies {
     apt "org.androidannotations:androidannotations:${androidAnnotationsVersion}"
     compile "org.androidannotations:androidannotations-api:${androidAnnotationsVersion}"
     testCompile 'junit:junit:4.12'
-    androidTestCompile "com.android.support:support-annotations:${supportLibVersion}"
+    androidTestCompile "com.android.support:support-annotations:24.0.0"
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    compile('io.nlopez.smartlocation:library:3.2.7') {
+        transitive = false
+    }
+    compile 'com.google.android.gms:play-services:9.6.1'
 }
