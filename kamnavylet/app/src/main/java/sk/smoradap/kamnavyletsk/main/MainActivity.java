@@ -11,11 +11,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MainViewFragment mFragment;
+    private LinearLayout mFragmentHolderLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,31 +37,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_simple_search, menu);
 
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                System.out.println("Query: " + query );
-                searchView.onActionViewCollapsed();
-                Intent i = new Intent(MainActivity.this, SearchActivity_.class);
-                i.putExtra(SearchActivity_.SEARCH_TERM, query);
-                startActivity(i);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        return true;
-    }
 }
