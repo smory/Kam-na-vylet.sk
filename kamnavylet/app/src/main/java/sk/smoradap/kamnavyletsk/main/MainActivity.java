@@ -41,9 +41,12 @@ public class MainActivity extends AppCompatActivity {
         mFragmentHolderLayout = (LinearLayout) findViewById(R.id.recycler_holder);
         mFragment = new MainViewFragment_();
 
-        MainContract.Presenter presenter = new MainPresenter(mFragment);
-        presenter.start();
+        // initialize presenter
+        new MainPresenter(mFragment);
 
+        getSupportFragmentManager().beginTransaction()
+                .add(mFragmentHolderLayout.getId(), mFragment)
+                .commit();
     }
 
 

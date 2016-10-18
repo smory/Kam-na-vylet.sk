@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +33,7 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 @EFragment(R.layout.fragment_main_view)
 public class MainViewFragment extends Fragment implements MainContract.View {
 
-
+    private static String TAG = "MainViewFragment";
     private MainContract.Presenter mPresenter;
 
     public MainViewFragment() {
@@ -62,6 +63,8 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d(TAG, "onResume");
+        System.out.println("onResume");
         mPresenter.start();
     }
 
@@ -102,7 +105,8 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
     @Override
     public void registerForSingleLocationUpdate(OnLocationUpdatedListener listener) {
-        SmartLocation.with(getContext()).location()
+        SmartLocation.with(getContext())
+                .location()
                 .oneFix()
                 .start(listener);
     }
