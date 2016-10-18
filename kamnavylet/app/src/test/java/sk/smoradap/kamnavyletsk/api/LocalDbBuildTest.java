@@ -20,26 +20,37 @@ public class LocalDbBuildTest {
 
     @Ignore("time consuming")
     @Test
-    public void testWholeDatabase()throws IOException {
+    public void buildAttractionDatabase()throws IOException {
         int i = 0;
-        List<SearchResult> list = SearchProvider.search("hnilec", 400, null);
+        List<SearchResult> list = SearchProvider.search("poprad", 400, null);
         PrintWriter wr = new PrintWriter(new File("db.txt"));
+
+        StringBuilder s = new StringBuilder();
         for(SearchResult sr : list){
             AttractionDetails ad = DetailsProvider.details(sr.getDescriptionUrl());
             try{
-                String s = ad.getName() + "\t" + ad.getTown() + "\t" + ad.getDistrict() + "\t" + ad.getArea() + "\t";
-                s += ad.getRegion() + "\t" + ad.getGps() + "\t" + ad.getSourceUrl() + "\t" + sr.getPreviewImageUlr() + "\t";
-                s +=  ad.getCategory();
+                s.setLength(0);
+                s.append(ad.getName() + "\t");
+                s.append(ad.getTown() + "\t");
+                s.append(ad.getDistrict() + "\t");
+                s.append(ad.getArea() + "\t");
+                s.append(ad.getRegion() + "\t");
+                s.append(ad.getGps() + "\t");
+                s.append(ad.getSourceUrl() + "\t");
+                s.append(sr.getPreviewImageUlr() + "\t");
+                s.append(ad.getCategory());
                 wr.println(s);
             } catch(Exception e){
                 e.printStackTrace();
                 i++;
                 continue;
             }
-            assertNotNull("Details should not be null" , DetailsProvider.details(sr.getDescriptionUrl()));
         }
         wr.flush();
         wr.close();
         System.out.println("number of errors: " + i);
     }
+
+    
+
 }
