@@ -9,17 +9,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
+import sk.smoradap.kamnavyletsk.model.Item;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 
 /**
  * Created by psmorada on 19.09.2016.
  */
-public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.SearchViewHolder> {
+public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.SearchViewHolder> {
 
     Context mContext;
-    List<SearchResult> mList;
+    List<? extends Item> mList;
 
-    public SearchRecyclerAdapter(Context context, List<SearchResult> list){
+    public ItemRecyclerAdapter(Context context, List<? extends Item> list){
         mContext = context;
         mList = list;
     }
@@ -34,16 +35,16 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
-        final SearchResult r = mList.get(position);
-        holder.item.setIcon(r.getFullImageUrl());
-        holder.item.setName(r.getName());
-        holder.item.setPlace(r.getTown());
+        final Item item = mList.get(position);
+        holder.item.setIcon(item.getPreviewImageUrl());
+        holder.item.setName(item.getName());
+        holder.item.setPlace(item.getTown());
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, DetailsActivity_.class);
-                i.putExtra(DetailsActivity_.URL, r.getSourceUrl());
+                i.putExtra(DetailsActivity_.URL, item.getSourceUrl());
                 mContext.startActivity(i);
             }
         });

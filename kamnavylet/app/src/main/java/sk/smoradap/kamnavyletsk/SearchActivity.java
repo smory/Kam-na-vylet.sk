@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
-import sk.smoradap.kamnavyletsk.gui.SearchRecyclerAdapter;
+import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.utils.Utils;
 
@@ -174,7 +174,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @Override
     @UiThread
     public void onSearchResults(List<SearchResult> results) {
-        SearchRecyclerAdapter adapter = new SearchRecyclerAdapter(this, results);
+        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(this, results);
         mRecyclerView.setAdapter(adapter);
         System.out.println("Setting adapter");
         mProgressLayout.setVisibility(View.GONE);
