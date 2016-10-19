@@ -1,5 +1,6 @@
 package sk.smoradap.kamnavyletsk.api;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
@@ -21,13 +23,14 @@ import static org.junit.Assert.assertNotNull;
  */
 public class LocalDbBuildTest {
 
+
     @Ignore("time consuming")
     @Test
     public void buildAttractionDatabaseAndPreditions()throws IOException {
         int i = 0;
         List<SearchResult> list = SearchProvider.search("poprad", 400, null);
         PrintWriter wr = new PrintWriter(new File("db.txt"));
-        TreeSet<String> set = new TreeSet<>();
+        TreeMap<String, String> map = new TreeMap<>();
 
         StringBuilder s = new StringBuilder();
         for(SearchResult sr : list){
@@ -45,14 +48,14 @@ public class LocalDbBuildTest {
                 s.append(ad.getCategory());
                 wr.println(s);
 
-                set.add(ad.getName());
-                set.add(ad.getTown());
-                set.add(ad.getDistrict());
-                set.add(ad.getArea());
+                map.put(Utils.stripAccents(ad.getName()).toLowerCase(), ad.getName());
+                map.put(Utils.stripAccents(ad.getTown()).toLowerCase(), ad.getTown());
+                map.put(Utils.stripAccents(ad.getDistrict()).toLowerCase(), ad.getDistrict());
+                map.put(Utils.stripAccents(ad.getArea()).toLowerCase(), ad.getRegion());
                 String regions[] = ad.getRegion().split(",");
 
                 for(String region : regions){
-                    set.add(region.trim());
+                    map.put(Utils.stripAccents(region.trim()).toLowerCase(), region.trim());
                 }
 
             } catch(Exception e){
@@ -65,8 +68,8 @@ public class LocalDbBuildTest {
         wr.close();
 
         wr = new PrintWriter(new File("sug.txt"));
-        for(String suggestion : set){
-            wr.println(Utils.stripAccents(suggestion).toLowerCase() + "\t" + suggestion);
+        for(String key : map.keySet()){
+            wr.println(key + "\t" + map.get(key));
         }
         wr.flush();
         wr.close();
