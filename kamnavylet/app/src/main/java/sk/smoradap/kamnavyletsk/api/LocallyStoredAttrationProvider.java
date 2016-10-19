@@ -21,9 +21,9 @@ public class LocallyStoredAttrationProvider {
     private static LocallyStoredAttrationProvider provider;
     private List<Attraction> attractions;
 
-    public static LocallyStoredAttrationProvider getInstance(){
+    public static LocallyStoredAttrationProvider getInstance(Context context){
         if(provider == null){
-            List<Attraction> l = build();
+            List<Attraction> l = build(context);
             provider = new LocallyStoredAttrationProvider();
             provider.attractions = l;
         }
@@ -31,11 +31,9 @@ public class LocallyStoredAttrationProvider {
         return provider;
     }
 
-    static List<Attraction> build(){
-        String content =  Utils.loadRawTextResource(R.raw.db);
-        String[] lines = content.split("\\r?\\n");
-        content = null;
-        return parseLines(Arrays.asList(lines));
+    static List<Attraction> build(Context context){
+        List<String> lines = Utils.loadRawTextResourceAsList(context, R.raw.db);
+        return parseLines(lines);
     }
 
     protected static List<Attraction> build(File file){
@@ -95,7 +93,11 @@ public class LocallyStoredAttrationProvider {
         return attraction;
     }
 
+    public List<Attraction> getAttractions() {
+        return attractions;
+    }
 
-
-
+    public void setAttractions(List<Attraction> attractions) {
+        this.attractions = attractions;
+    }
 }

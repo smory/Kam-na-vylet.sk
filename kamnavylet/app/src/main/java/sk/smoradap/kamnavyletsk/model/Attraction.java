@@ -143,4 +143,13 @@ public class Attraction {
         result = 31 * result + previewImageUrl.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Attraction{" +
+                "name='" + name + '\'' +
+                ", town='" + town + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
+                '}';
+    }
 }

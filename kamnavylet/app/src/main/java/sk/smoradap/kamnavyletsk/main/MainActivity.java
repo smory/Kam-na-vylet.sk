@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mFragment = new MainViewFragment_();
 
         // initialize presenter
-        new MainPresenter(mFragment);
+        new MainPresenter(mFragment, getApplicationContext());
 
         getSupportFragmentManager().beginTransaction()
                 .add(mFragmentHolderLayout.getId(), mFragment)
