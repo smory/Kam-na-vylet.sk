@@ -34,7 +34,7 @@ public class LocalDbBuildTest {
 
         StringBuilder s = new StringBuilder();
         for(SearchResult sr : list){
-            AttractionDetails ad = DetailsProvider.details(sr.getDescriptionUrl());
+            AttractionDetails ad = DetailsProvider.details(sr.getSourceUrl());
             try{
                 s.setLength(0);
                 s.append(ad.getName() + "\t");
@@ -44,7 +44,7 @@ public class LocalDbBuildTest {
                 s.append(ad.getRegion() + "\t");
                 s.append(ad.getGps() + "\t");
                 s.append(ad.getSourceUrl() + "\t");
-                s.append(sr.getPreviewImageUlr() + "\t");
+                s.append(sr.getPreviewImageUrl() + "\t");
                 s.append(ad.getCategory());
                 wr.println(s);
 

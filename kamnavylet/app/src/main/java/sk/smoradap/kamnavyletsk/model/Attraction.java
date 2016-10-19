@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by psmorada on 19.10.2016.
  */
-public class Attraction {
+public class Attraction implements Item {
 
     private String name;
     private String category;

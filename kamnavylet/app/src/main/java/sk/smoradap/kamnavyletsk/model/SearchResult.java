@@ -3,13 +3,13 @@ package sk.smoradap.kamnavyletsk.model;
 /**
  * Created by smora on 01.09.2016.
  */
-public class SearchResult {
+public class SearchResult implements Item {
 
     private String name;
     private String town;
-    private String descriptionUrl;
+    private String sourceUrl;
     private String briefDescription;
-    private String previewImageUlr;
+    private String previewImageUrl;
     private String fullImageUrl;
     private String distance;
 
@@ -22,12 +22,12 @@ public class SearchResult {
         this.name = name;
     }
 
-    public String getPreviewImageUlr() {
-        return previewImageUlr;
+    public String getPreviewImageUrl() {
+        return previewImageUrl;
     }
 
-    public void setPreviewImageUlr(String previewImageUlr) {
-        this.previewImageUlr = previewImageUlr;
+    public void setPreviewImageUrl(String previewImageUrl) {
+        this.previewImageUrl = previewImageUrl;
     }
 
     public String getFullImageUrl() {
@@ -38,12 +38,12 @@ public class SearchResult {
         this.fullImageUrl = fullImageUrl;
     }
 
-    public String getDescriptionUrl() {
-        return descriptionUrl;
+    public String getSourceUrl() {
+        return sourceUrl;
     }
 
-    public void setDescriptionUrl(String descriptionUrl) {
-        this.descriptionUrl = descriptionUrl;
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
     }
 
     public String getBriefDescription() {
@@ -75,9 +75,9 @@ public class SearchResult {
         return "SearchResult{" +
                 "name='" + name + '\'' +
                 ", town='" + town + '\'' +
-                ", descriptionUrl='" + descriptionUrl + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
                 ", briefDescription='" + briefDescription + '\'' +
-                ", previewImageUlr='" + previewImageUlr + '\'' +
+                ", previewImageUrl='" + previewImageUrl + '\'' +
                 ", fullImageUrl='" + fullImageUrl + '\'' +
                 ", distance='" + distance + '\'' +
                 '}';

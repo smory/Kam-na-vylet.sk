@@ -126,8 +126,8 @@ public class SearchProvider {
         sr.setBriefDescription(desc);
         sr.setName(name);
         sr.setTown(town);
-        sr.setDescriptionUrl(url);
-        sr.setPreviewImageUlr(smallPictureUrl);
+        sr.setSourceUrl(url);
+        sr.setPreviewImageUrl(smallPictureUrl);
         sr.setFullImageUrl(largePictureUrl);
         sr.setDistance(distance);
 

@@ -43,7 +43,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, DetailsActivity_.class);
-                i.putExtra(DetailsActivity_.URL, r.getDescriptionUrl());
+                i.putExtra(DetailsActivity_.URL, r.getSourceUrl());
                 mContext.startActivity(i);
             }
         });

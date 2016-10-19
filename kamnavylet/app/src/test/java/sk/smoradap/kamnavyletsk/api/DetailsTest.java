@@ -40,7 +40,7 @@ public class DetailsTest {
     public void testWholeDatabase()throws IOException {
         List<SearchResult> list = SearchProvider.search("stara lubovna", 400, null);
         for(SearchResult sr : list){
-            assertNotNull("Details should not be null" , DetailsProvider.details(sr.getDescriptionUrl()));
+            assertNotNull("Details should not be null" , DetailsProvider.details(sr.getSourceUrl()));
         }
     }
 }
