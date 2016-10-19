@@ -11,20 +11,23 @@ import java.util.TreeSet;
 
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
+import sk.smoradap.kamnavyletsk.utils.Utils;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
+ * Class to create a local databases. Should be moved out of test cases in future...
  * Created by psmorada on 18.10.2016.
  */
 public class LocalDbBuildTest {
 
     @Ignore("time consuming")
     @Test
-    public void buildAttractionDatabase()throws IOException {
+    public void buildAttractionDatabaseAndPreditions()throws IOException {
         int i = 0;
         List<SearchResult> list = SearchProvider.search("poprad", 400, null);
         PrintWriter wr = new PrintWriter(new File("db.txt"));
+        TreeSet<String> set = new TreeSet<>();
 
         StringBuilder s = new StringBuilder();
         for(SearchResult sr : list){
@@ -41,28 +44,6 @@ public class LocalDbBuildTest {
                 s.append(sr.getPreviewImageUlr() + "\t");
                 s.append(ad.getCategory());
                 wr.println(s);
-            } catch(Exception e){
-                e.printStackTrace();
-                i++;
-                continue;
-            }
-        }
-        wr.flush();
-        wr.close();
-        System.out.println("number of errors: " + i);
-    }
-
-
-    @Ignore("time consuming")
-    @Test
-    public void buildSuggestionDatabase()throws IOException {
-        int i = 0;
-        List<SearchResult> list = SearchProvider.search("poprad", 400, null);
-        TreeSet<String> set = new TreeSet<>();
-
-        for(SearchResult sr : list){
-            AttractionDetails ad = DetailsProvider.details(sr.getDescriptionUrl());
-            try{
 
                 set.add(ad.getName());
                 set.add(ad.getTown());
@@ -80,15 +61,17 @@ public class LocalDbBuildTest {
                 continue;
             }
         }
+        wr.flush();
+        wr.close();
 
-        PrintWriter wr = new PrintWriter(new File("sug.txt"));
+        wr = new PrintWriter(new File("sug.txt"));
         for(String suggestion : set){
-            wr.println(suggestion);
+            wr.println(Utils.stripAccents(suggestion).toLowerCase() + "\t" + suggestion);
         }
         wr.flush();
         wr.close();
+
         System.out.println("number of errors: " + i);
     }
-
 
 }
