@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.TreeSet;
 
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
@@ -51,6 +52,43 @@ public class LocalDbBuildTest {
         System.out.println("number of errors: " + i);
     }
 
-    
+
+    @Ignore("time consuming")
+    @Test
+    public void buildSuggestionDatabase()throws IOException {
+        int i = 0;
+        List<SearchResult> list = SearchProvider.search("poprad", 400, null);
+        TreeSet<String> set = new TreeSet<>();
+
+        for(SearchResult sr : list){
+            AttractionDetails ad = DetailsProvider.details(sr.getDescriptionUrl());
+            try{
+
+                set.add(ad.getName());
+                set.add(ad.getTown());
+                set.add(ad.getDistrict());
+                set.add(ad.getArea());
+                String regions[] = ad.getRegion().split(",");
+
+                for(String region : regions){
+                    set.add(region.trim());
+                }
+
+            } catch(Exception e){
+                e.printStackTrace();
+                i++;
+                continue;
+            }
+        }
+
+        PrintWriter wr = new PrintWriter(new File("sug.txt"));
+        for(String suggestion : set){
+            wr.println(suggestion);
+        }
+        wr.flush();
+        wr.close();
+        System.out.println("number of errors: " + i);
+    }
+
 
 }
