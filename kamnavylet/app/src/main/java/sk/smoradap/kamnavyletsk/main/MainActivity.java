@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -17,7 +18,7 @@ import sk.smoradap.kamnavyletsk.R;
 public class MainActivity extends AppCompatActivity {
 
     private MainViewFragment mFragment;
-    private LinearLayout mFragmentHolderLayout;
+    private FrameLayout mFragmentHolderLayout;
 
 
     @Override
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mFragmentHolderLayout = (LinearLayout) findViewById(R.id.recycler_holder);
+        mFragmentHolderLayout = (FrameLayout) findViewById(R.id.recycler_holder);
         mFragment = new MainViewFragment_();
 
         // initialize presenter
