@@ -18,6 +18,7 @@ public interface MainContract {
         void showAttractionDetails(AttractionDetails details);
         void showAttractionDetails(String url);
         void showNearbyAttractions(List<? extends Item> items);
+        void showBusy(boolean busy);
     }
 
     interface Presenter {

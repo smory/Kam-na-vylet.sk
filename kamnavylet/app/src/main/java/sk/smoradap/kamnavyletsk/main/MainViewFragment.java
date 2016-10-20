@@ -1,21 +1,16 @@
 package sk.smoradap.kamnavyletsk.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -49,6 +44,8 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     @ViewById(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
 
+    private ProgressDialog mProgressDialog;
+
     public MainViewFragment() {
         // Required empty public constructor
     }
@@ -73,17 +70,6 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         setHasOptionsMenu(true);
     }
 
-    /*@AfterViews
-    public void setFab(){
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    } */
 
     @Override
     public void onResume(){
@@ -159,5 +145,20 @@ public class MainViewFragment extends Fragment implements MainContract.View {
             mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items);
         }
         mRecyclerView.setAdapter(mItemRecyclerAdapter);
+    }
+
+    @UiThread
+    @Override
+    public void showBusy(boolean busy){
+        if(mProgressDialog == null){
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage(getString(R.string.loading_data));
+        }
+
+        if(busy){
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
 }

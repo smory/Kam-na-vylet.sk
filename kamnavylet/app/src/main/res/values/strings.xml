@@ -8,6 +8,7 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="searching">vyhľadávam...</string>
     <string name="title_activity_main">Kam na výlet.sk</string>
+    <string name="loading_data">Načítavám údaje</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

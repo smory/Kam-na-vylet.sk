@@ -34,6 +34,7 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
     public void start() {
         Log.d(TAG, "Starting presenter.");
         mView.registerForSingleLocationUpdate(this);
+        mView.showBusy(true);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
         List<Attraction> attractions = GpsUtils.getAtractionsInRadius(location, p.getAttractions(), 10d);
         System.out.println(attractions);
         mView.showNearbyAttractions(attractions);
+        mView.showBusy(false);
 
     }
 }
