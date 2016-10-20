@@ -33,7 +33,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
+import sk.smoradap.kamnavyletsk.details.DetailsActivity;
+import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
+import sk.smoradap.kamnavyletsk.model.Item;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.utils.Utils;
 
@@ -174,7 +177,12 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @Override
     @UiThread
     public void onSearchResults(List<SearchResult> results) {
-        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(this, results);
+        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(this, results, new ItemRecyclerAdapter.OnItemPickedListener() {
+            @Override
+            public void onItemPicked(Item item) {
+                showAttractionDetails(item.getSourceUrl());
+            }
+        });
         mRecyclerView.setAdapter(adapter);
         System.out.println("Setting adapter");
         mProgressLayout.setVisibility(View.GONE);
@@ -183,5 +191,12 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     @Override
     public void onSearchFailure(Exception e) {
 
+    }
+
+    @UiThread
+    public void showAttractionDetails(String url){
+        Intent i = new Intent(this, DetailsActivity_.class);
+        i.putExtra(DetailsActivity.URL, url);
+        startActivity(i);
     }
 }

@@ -39,7 +39,7 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
 
     @Override
     public void attactionPicked(Item item) {
-
+        mView.showAttractionDetails(item.getSourceUrl());
     }
 
 

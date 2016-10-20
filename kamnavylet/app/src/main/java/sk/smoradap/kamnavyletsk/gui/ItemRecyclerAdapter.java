@@ -17,12 +17,15 @@ import sk.smoradap.kamnavyletsk.model.SearchResult;
  */
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.SearchViewHolder> {
 
-    Context mContext;
-    List<? extends Item> mList;
+    private Context mContext;
+    private List<? extends Item> mList;
+    private OnItemPickedListener mListener;
 
-    public ItemRecyclerAdapter(Context context, List<? extends Item> list){
+
+    public ItemRecyclerAdapter(Context context, List<? extends Item> list, OnItemPickedListener listener){
         mContext = context;
         mList = list;
+        mListener = listener;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(SearchViewHolder holder, int position) {
+    public void onBindViewHolder(SearchViewHolder holder, final int position) {
         final Item item = mList.get(position);
         holder.item.setIcon(item.getPreviewImageUrl());
         holder.item.setName(item.getName());
@@ -43,9 +46,9 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(mContext, DetailsActivity_.class);
-                i.putExtra(DetailsActivity_.URL, item.getSourceUrl());
-                mContext.startActivity(i);
+                if(mListener != null){
+                    mListener.onItemPicked(mList.get(position));
+                }
             }
         });
     }
@@ -64,5 +67,9 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
             item = itemView;
         }
+    }
+
+    public interface OnItemPickedListener {
+        void onItemPicked(Item item);
     }
 }

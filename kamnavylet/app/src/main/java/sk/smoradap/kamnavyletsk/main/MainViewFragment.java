@@ -122,7 +122,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
                 .start(listener);
     }
 
-
+    @UiThread
     @Override
     public void showAttractionDetails(AttractionDetails details) {
         Intent i = new Intent(getContext(), DetailsActivity_.class);
@@ -130,6 +130,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         startActivity(i);
     }
 
+    @UiThread
     @Override
     public void showAttractionDetails(String url){
         Intent i = new Intent(getContext(), DetailsActivity_.class);
@@ -142,7 +143,12 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     public void showNearbyAttractions(List<? extends Item> items) {
         Log.v(TAG, "Setting nearby attraction recycler adapter");
         if(mItemRecyclerAdapter == null){
-            mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items);
+            mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items, new ItemRecyclerAdapter.OnItemPickedListener() {
+                @Override
+                public void onItemPicked(Item item) {
+                    mPresenter.attactionPicked(item);
+                }
+            });
         }
         mRecyclerView.setAdapter(mItemRecyclerAdapter);
     }
