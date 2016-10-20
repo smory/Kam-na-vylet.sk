@@ -11,6 +11,7 @@ import java.util.List;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import sk.smoradap.kamnavyletsk.api.LocallyStoredAttrationProvider;
 import sk.smoradap.kamnavyletsk.model.Attraction;
+import sk.smoradap.kamnavyletsk.model.Item;
 import sk.smoradap.kamnavyletsk.utils.GpsUtils;
 
 /**
@@ -36,7 +37,7 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
     }
 
     @Override
-    public void attactionPicked() {
+    public void attactionPicked(Item item) {
 
     }
 
@@ -51,6 +52,7 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
         LocallyStoredAttrationProvider p = LocallyStoredAttrationProvider.getInstance(mContext);
         List<Attraction> attractions = GpsUtils.getAtractionsInRadius(location, p.getAttractions(), 10d);
         System.out.println(attractions);
+        mView.showNearbyAttractions(attractions);
 
     }
 }

@@ -3,8 +3,11 @@ package sk.smoradap.kamnavyletsk.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,10 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -23,7 +30,9 @@ import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
+import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
+import sk.smoradap.kamnavyletsk.model.Item;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +44,10 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
     private static String TAG = "MainViewFragment";
     private MainContract.Presenter mPresenter;
+    private ItemRecyclerAdapter mItemRecyclerAdapter;
+
+    @ViewById(R.id.main_recycler_view)
+    RecyclerView mRecyclerView;
 
     public MainViewFragment() {
         // Required empty public constructor
@@ -59,6 +72,18 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     public void enableMenu(){
         setHasOptionsMenu(true);
     }
+
+    /*@AfterViews
+    public void setFab(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    } */
 
     @Override
     public void onResume(){
@@ -111,6 +136,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
                 .start(listener);
     }
 
+
     @Override
     public void showAttractionDetails(AttractionDetails details) {
         Intent i = new Intent(getContext(), DetailsActivity_.class);
@@ -123,5 +149,15 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         Intent i = new Intent(getContext(), DetailsActivity_.class);
         i.putExtra(DetailsActivity.URL, url);
         startActivity(i);
+    }
+
+    @Override
+    @UiThread
+    public void showNearbyAttractions(List<? extends Item> items) {
+        Log.v(TAG, "Setting nearby attraction recycler adapter");
+        if(mItemRecyclerAdapter == null){
+            mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items);
+        }
+        mRecyclerView.setAdapter(mItemRecyclerAdapter);
     }
 }
