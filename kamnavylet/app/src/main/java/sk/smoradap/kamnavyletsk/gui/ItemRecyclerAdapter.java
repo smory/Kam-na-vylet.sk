@@ -55,7 +55,12 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        if(mList == null){
+            return 0;
+        } else {
+            return mList.size();
+        }
+
     }
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder{
