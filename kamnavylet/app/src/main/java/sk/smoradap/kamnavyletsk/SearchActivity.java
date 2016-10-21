@@ -144,7 +144,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
 
             @Override
             public boolean onSuggestionSelect(int position) {
-                // Your code here
                 return true;
             }
         });

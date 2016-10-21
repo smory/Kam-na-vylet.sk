@@ -57,4 +57,9 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
         mView.showBusy(false);
 
     }
+
+    @Override
+    public void searchReqested(String query) {
+        mView.performSearch(query);
+    }
 }

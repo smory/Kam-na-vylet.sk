@@ -19,10 +19,12 @@ public interface MainContract {
         void showAttractionDetails(String url);
         void showNearbyAttractions(List<? extends Item> items);
         void showBusy(boolean busy);
+        void performSearch(String query);
     }
 
     interface Presenter {
         void start();
         void attactionPicked(Item item);
+        void searchReqested(String query);
     }
 }

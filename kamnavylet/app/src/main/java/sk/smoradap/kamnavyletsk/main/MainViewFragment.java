@@ -3,8 +3,12 @@ package sk.smoradap.kamnavyletsk.main;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -28,6 +32,7 @@ import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.Item;
+import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +50,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     RecyclerView mRecyclerView;
 
     private ProgressDialog mProgressDialog;
+    private SimpleCursorAdapter mSugestionAdapter;
 
     public MainViewFragment() {
         // Required empty public constructor
@@ -70,7 +76,6 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public void onResume(){
         super.onResume();
@@ -95,24 +100,51 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                System.out.println("Query: " + query );
                 searchView.onActionViewCollapsed();
-                Intent i = new Intent(getContext(), SearchActivity_.class);
-                i.putExtra(SearchActivity_.SEARCH_TERM, query);
-                startActivity(i);
-                return true;
+                mPresenter.searchReqested(query);
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText.length() > 1){
+                    MatrixCursor c = SuggestionsUtils.createSugestionCursor(getContext().getApplicationContext(), newText);
+                    mSugestionAdapter.changeCursor(c);
+                }
                 return false;
             }
+
         });
 
+        final String[] from = new String[] {"name"};
+        final int[] to = new int[] {android.R.id.text1};
+        mSugestionAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1,
+                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        searchView.setSuggestionsAdapter(mSugestionAdapter);
+
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Cursor c = (Cursor) mSugestionAdapter.getItem(position);
+                System.out.println(c.getString(1));
+                searchView.onActionViewCollapsed();
+                mPresenter.searchReqested(c.getString(1));
+                return true;
+            }
+
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return true;
+            }
+        });
     }
+
+
 
     @Override
     public void registerForSingleLocationUpdate(OnLocationUpdatedListener listener) {
@@ -166,5 +198,13 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         } else {
             mProgressDialog.dismiss();
         }
+    }
+
+    @Override
+    @UiThread
+    public void performSearch(String query) {
+        Intent i = new Intent(getContext(), SearchActivity_.class);
+        i.putExtra(SearchActivity_.SEARCH_TERM, query);
+        startActivity(i);
     }
 }
