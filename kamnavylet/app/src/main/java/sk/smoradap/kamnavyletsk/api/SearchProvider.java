@@ -22,9 +22,25 @@ public class SearchProvider {
     public static String BASE_URL = "http://kamnavylet.sk";
 
     public static List<SearchResult> search(String query, int distance, Category category) throws IOException{
+        List<SearchResult> results = null;
+        try {
+            results = search(query, distance, category, false);
+            if(results == null || results.size() == 0){
+                results = search(query, distance, category, true);
+            }
+        } catch (IOException ioe){
+            throw ioe;
+        }
+        return results;
+    }
+
+    private static List<SearchResult> search(String query, int distance, Category category,
+                                             boolean alternativeUrl) throws IOException{
         Document document = null;
         try {
-            document = Jsoup.connect(createSearchUrl(query, distance, 0, category)).get();
+            document = Jsoup.connect(alternativeUrl?
+                    createAlternativeSearchUrl(query, distance, 0):
+                    createSearchUrl(query, distance, 0, category)).get();
         } catch (HttpStatusException se){
             return null;
         } catch (IOException e) {
@@ -38,7 +54,9 @@ public class SearchProvider {
         System.out.println("number of pages: " + numberOfPages);
         for(int i = 2; i <= numberOfPages; i++){
             try {
-                document = Jsoup.connect(createSearchUrl(query, distance, i, category)).get();
+                document = Jsoup.connect( alternativeUrl?
+                        createAlternativeSearchUrl(query, distance,i):
+                        createSearchUrl(query, distance, i, category)).get();
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
@@ -93,6 +111,21 @@ public class SearchProvider {
         }
         url.append("?o=" + distance);
         url.append(pageNumber > 0? "&page=" + pageNumber : "");
+        System.out.println(url);
+        return url.toString();
+    }
+
+    private static String createAlternativeSearchUrl(String query, int distance, int pageNumber){
+        StringBuilder url = new StringBuilder(BASE_URL);
+        url.append("/search?q=");
+        try {
+            url.append(URLEncoder.encode(query, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            url.append(query);
+        }
+        url.append(pageNumber > 0? "&page=" + pageNumber : "");
+        url.append("&x=0&y=0");
         System.out.println(url);
         return url.toString();
     }
