@@ -1,5 +1,7 @@
 package sk.smoradap.kamnavyletsk.main;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         ImageView image = (ImageView) findViewById(R.id.toolbar_image);
+        image.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.LIGHTEN);
         Glide.with(this).load(R.drawable.foto).into(image);
     }
 
