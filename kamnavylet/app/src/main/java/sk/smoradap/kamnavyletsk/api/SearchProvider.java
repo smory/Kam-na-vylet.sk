@@ -9,6 +9,8 @@ import sk.smoradap.kamnavyletsk.model.Category;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,7 +85,12 @@ public class SearchProvider {
     private static String createSearchUrl(String query, int distance, int pageNumber, Category category){
         StringBuilder url = new StringBuilder(SEARCH_URL);
         url.append(category == null? "" : category.getUrlString() + "/");
-        url.append(query);
+        try {
+            url.append(URLEncoder.encode(query, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            url.append(query);
+        }
         url.append("?o=" + distance);
         url.append(pageNumber > 0? "&page=" + pageNumber : "");
         System.out.println(url);
