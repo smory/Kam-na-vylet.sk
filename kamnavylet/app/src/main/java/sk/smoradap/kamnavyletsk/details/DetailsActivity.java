@@ -240,32 +240,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_simple_search, menu);
-
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                System.out.println("Query: " + query );
-                searchView.onActionViewCollapsed();
-                Intent i = new Intent(DetailsActivity.this, SearchActivity_.class);
-                i.putExtra(SearchActivity_.SEARCH_TERM, query);
-                startActivity(i);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        return true;
-    }
-
 
     @Override
     @UiThread
