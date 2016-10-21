@@ -1,7 +1,6 @@
 package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -42,8 +41,8 @@ import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
-import sk.smoradap.kamnavyletsk.gui.SearchItem;
-import sk.smoradap.kamnavyletsk.gui.SearchItem_;
+import sk.smoradap.kamnavyletsk.gui.ItemView;
+import sk.smoradap.kamnavyletsk.gui.ItemView_;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EActivity(R.layout.activity_details)
@@ -316,7 +315,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         nearbyAttrationsLayout.removeAllViews();
 
         for(final AttractionDetails nearbyAttraction : nearbyAttractions){
-            final SearchItem item = SearchItem_.build(getApplicationContext());
+            final ItemView item = ItemView_.build(getApplicationContext());
             item.setName(nearbyAttraction.getName());
             item.setPlace(nearbyAttraction.getTown());
 

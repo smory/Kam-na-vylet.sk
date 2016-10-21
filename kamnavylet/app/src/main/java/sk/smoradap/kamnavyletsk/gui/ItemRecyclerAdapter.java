@@ -1,16 +1,13 @@
 package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.model.Item;
-import sk.smoradap.kamnavyletsk.model.SearchResult;
 
 /**
  * Created by psmorada on 19.09.2016.
@@ -31,7 +28,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     @Override
     public SearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        SearchItem item = SearchItem_.build(mContext);
+        ItemView item = ItemView_.build(mContext);
         parent.addView(item);
         return new SearchViewHolder(item);
     }
@@ -65,9 +62,9 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder{
 
-        SearchItem item;
+        ItemView item;
 
-        public SearchViewHolder(SearchItem itemView) {
+        public SearchViewHolder(ItemView itemView) {
             super(itemView);
 
             item = itemView;

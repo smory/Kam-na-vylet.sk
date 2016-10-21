@@ -1,7 +1,6 @@
 package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,14 +14,13 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import jp.wasabeef.glide.transformations.internal.Utils;
 import sk.smoradap.kamnavyletsk.R;
 
 /**
  * Created by smora on 14.09.2016.
  */
-@EViewGroup(R.layout.search_item_layout)
-public class SearchItem extends LinearLayout{
+@EViewGroup(R.layout.item_layout)
+public class ItemView extends LinearLayout{
 
     @ViewById(R.id.iv_base_icon)
     ImageView icon;
@@ -48,15 +46,15 @@ public class SearchItem extends LinearLayout{
     @ViewById(R.id.view_to_move_right)
     View toMoveRight;
 
-    public SearchItem(Context context) {
+    public ItemView(Context context) {
         super(context);
     }
 
-    public SearchItem(Context context, AttributeSet attrs) {
+    public ItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SearchItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
