@@ -33,11 +33,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
+import sk.smoradap.kamnavyletsk.api.PredictionProvider;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.Item;
+import sk.smoradap.kamnavyletsk.model.Prediction;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
+import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 import sk.smoradap.kamnavyletsk.utils.Utils;
 
 @EActivity(R.layout.activity_search)
@@ -61,8 +64,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     String mSearchTerm;
 
     private SimpleCursorAdapter mSugestionAdapter;
-    private String[] suggestions;
-
 
     @AfterViews
     void setFab() {
@@ -80,7 +81,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     public void performSearch(){
         Intent i = getIntent();
         api.search(mSearchTerm, 15, null, this);
-        loadSuggestions();
     }
 
     @AfterViews
@@ -121,8 +121,9 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(suggestions != null){
-                    populateAdapter(newText);
+                if(newText.length() > 1){
+                    MatrixCursor c = SuggestionsUtils.createSugestionCursor(getApplicationContext(), newText);
+                    mSugestionAdapter.changeCursor(c);
                 }
                 return false;
             }
@@ -149,22 +150,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
         });
 
         return true;
-    }
-
-    private void populateAdapter(String query) {
-        final MatrixCursor c = new MatrixCursor(new String[]{ BaseColumns._ID, "name" });
-        for (int i=0; i<suggestions.length; i++) {
-            if (suggestions[i].toLowerCase().startsWith(query.toLowerCase())) {
-                c.addRow(new Object[]{i, suggestions[i]});
-                System.out.println("Adding row: " + i + ", " + suggestions[i]);
-            }
-        }
-        mSugestionAdapter.changeCursor(c);
-    }
-
-    @Background
-    void loadSuggestions(){
-        suggestions = Utils.loadRawTextResourceAsArray(this, R.raw.suggestions);
     }
 
     void createSuggestionsAdapter(){
