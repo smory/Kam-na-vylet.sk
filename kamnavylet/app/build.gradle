@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'android-apt'
 
 
@@ -25,11 +31,13 @@ android {
 buildscript {
     repositories {
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
@@ -63,5 +71,8 @@ dependencies {
     //compile 'com.google.android.gms:play-services:9.6.1'
     compile('io.nlopez.smartlocation:library:3.2.7') {
         transitive = false
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
     }
 }
