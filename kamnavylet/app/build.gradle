@@ -7,6 +7,7 @@ repositories {
 
 apply plugin: 'android-apt'
 
+def packageId = "sk.smoradap.kamnavyletsk"
 
 
 android {
@@ -14,7 +15,7 @@ android {
     buildToolsVersion "25.0.1"
 
     defaultConfig {
-        applicationId "sk.smoradap.kamnavyletsk"
+        applicationId packageId
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -24,6 +25,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: "Výlety",
+                                    mainActivityName : "Výlety",
+                                    detailsActivityName : "Vylety-detail"]
+        }
+
+        debug {
+            applicationIdSuffix '.debug'
+            manifestPlaceholders = [appName: "Výlety-debug",
+                                    mainActivityName : "Výlety-d",
+                                    detailsActivityName : "Vylety-detail-d"]
         }
     }
 }
@@ -35,7 +46,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'io.fabric.tools:gradle:1.+'
     }
@@ -43,12 +54,13 @@ buildscript {
 
 apt {
     arguments {
-        androidManifestFile variant.outputs[0].processResources.manifestFile
+        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        resourcePackageName packageId
     }
 }
 
 
-final supportLibVersion = "25.0.1"
+final supportLibVersion = "25.3.1"
 final String androidAnnotationsVersion = '4.1.0';
 
 dependencies {

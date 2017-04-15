@@ -9,33 +9,39 @@
         android:name="sk.smoradap.kamnavyletsk.KamNaVyletApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:label="${appName}"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
-        <meta-data tools:replace="android:value" android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data tools:replace="android:value"
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".details.DetailsActivity_">
+        <activity android:name=".details.DetailsActivity_"
+            android:label="${detailsActivityName}">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ImageBrowseActivity_" />
+
         <activity
             android:name=".SearchActivity_"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".main.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="${mainActivityName}"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="dc781fa052eb06d9a7efd008f6784075f03b97a5" />
