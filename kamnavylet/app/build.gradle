@@ -5,14 +5,13 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'android-apt'
-
 def packageId = "sk.smoradap.kamnavyletsk"
+def appName = "Výlety"
 
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId packageId
@@ -20,21 +19,28 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        // AA for different applicationIds for buildTypes or productFlavors
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["resourcePackageName": android.defaultConfig.applicationId]
+            }
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [appName: "Výlety",
-                                    mainActivityName : "Výlety",
-                                    detailsActivityName : "Vylety-detail"]
+            manifestPlaceholders = [appName: appName,
+                                    mainActivityName : appName,
+                                    detailsActivityName : appName + "-detail"]
         }
 
         debug {
             applicationIdSuffix '.debug'
-            manifestPlaceholders = [appName: "Výlety-debug",
-                                    mainActivityName : "Výlety-d",
-                                    detailsActivityName : "Vylety-detail-d"]
+            manifestPlaceholders = [appName: appName + "-debug",
+                                    mainActivityName : appName + "-debug",
+                                    detailsActivityName : appName + "-detail-debug"]
         }
     }
 }
@@ -47,25 +53,16 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
-apt {
-    arguments {
-        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
-        resourcePackageName packageId
-    }
-}
-
-
 final supportLibVersion = "25.3.1"
-final String androidAnnotationsVersion = '4.1.0';
+final String androidAnnotationsVersion = '4.3.0';
 
 dependencies {
 
-    apt "org.androidannotations:androidannotations:${androidAnnotationsVersion}"
+    annotationProcessor "org.androidannotations:androidannotations:${androidAnnotationsVersion}"
     compile "org.androidannotations:androidannotations-api:${androidAnnotationsVersion}"
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
