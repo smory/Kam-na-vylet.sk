@@ -1,5 +1,10 @@
 package sk.smoradap.kamnavyletsk.details;
 
+import android.content.Context;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,26 +17,31 @@ import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 /**
  * Created by psmorada on 13.10.2016.
  */
+@EBean(scope = EBean.Scope.Default)
 public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletApi.OnDetailsListener {
 
-    private DetailsContract.View mView;
+    @RootContext
+    Context context;
+
+    private DetailsContract.View view;
     private AttractionDetails mAttractionDetails;
     KamNaVyletApi api = new KamNaVyletApi();
     List<AttractionDetails> mNearbyAttractions = new LinkedList<>();
 
-    public DetailsPresenter(DetailsContract.View view){
-        mView = view;
-    }
-
     @Override
     public void start(String url) {
         if(mAttractionDetails == null){
-            mView.setBusy(true);
+            view.setBusy(true);
             api.loadDetails(url, this);
         } else {
             setUpView(mAttractionDetails);
         }
 
+    }
+
+    @Override
+    public void setView(DetailsContract.View view) {
+        this.view = view;
     }
 
     @Override
@@ -42,12 +52,12 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
 
     @Override
     public void nearByAttractionPicked(AttractionDetails attraction) {
-        mView.showNearbyAttractionDetails(attraction);
+        view.showNearbyAttractionDetails(attraction);
     }
 
     @Override
     public void previewImagePicked(int imageIndex) {
-        mView.showFullImagePreviews(mAttractionDetails.getImageUrls(), imageIndex);
+        view.showFullImagePreviews(mAttractionDetails.getImageUrls(), imageIndex);
     }
 
     @Override
@@ -57,20 +67,20 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     }
 
     void setUpView(AttractionDetails details){
-        mView.setBusy(true);
-        mView.setTitle(details.getName(), details.getTown(), details.getImageUrls().get(0));
-        mView.setImagePreviews(details.getImageUrls());
-        mView.setCategory(details.getCategory());
-        mView.setDetailsDescription(details.getDescription());
-        mView.setDetails(details.getDetailsMap());
+        view.setBusy(true);
+        view.setTitle(details.getName(), details.getTown(), details.getImageUrls().get(0));
+        view.setImagePreviews(details.getImageUrls());
+        view.setCategory(details.getCategory());
+        view.setDetailsDescription(details.getDescription());
+        view.setDetails(details.getDetailsMap());
 
         if(mNearbyAttractions.isEmpty()){
             loadNearbyAttractionDetails(details.getNearbyAttractions());
         } else {
-            mView.setNearByAttractions(mNearbyAttractions);
+            view.setNearByAttractions(mNearbyAttractions);
         }
 
-        mView.setBusy(false);
+        view.setBusy(false);
     }
 
     private void loadNearbyAttractionDetails(final List<NearbyAttraction> list)  {
@@ -85,7 +95,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
                         e.printStackTrace();
                     }
                 }
-                mView.setNearByAttractions(mNearbyAttractions);
+                view.setNearByAttractions(mNearbyAttractions);
             }
         };
         Thread t = new Thread(r);
@@ -96,6 +106,6 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
 
     @Override
     public void onDetailsFailure(IOException e) {
-        mView.showCannotLoadData();
+        view.showCannotLoadData();
     }
 }

@@ -4,15 +4,12 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,6 +22,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
@@ -38,7 +36,6 @@ import java.util.Map;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
-import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
@@ -50,11 +47,12 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 public class DetailsActivity extends AppCompatActivity implements DetailsContract.View,
         ImageRecyclerAdapter.OnImageClickedInterface {
 
-    public static final String tag = "sk.smoradap.kamnavylet";
+    public static final String TAG = DetailsActivity.class.getSimpleName();
     public static final String URL = "URL";
     public static final String DETAILS = "details";
 
-    DetailsContract.Presenter mPresenter;
+    @Bean(DetailsPresenter.class)
+    DetailsContract.Presenter presenter;
 
     private ImageRecyclerAdapter mImageAdapter;
 
@@ -127,10 +125,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     private String mUrl;
 
     @AfterViews
-    void createPresenter(){
-        if(mPresenter == null){
-            mPresenter = new DetailsPresenter(this);
-        }
+    void setupPresenter(){
+        presenter.setView(this);
     }
 
     @AfterViews
@@ -154,9 +150,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         mUrl =  getIntent().getStringExtra(URL) == null ? mUrl :  getIntent().getStringExtra(URL);
         AttractionDetails details = (AttractionDetails) getIntent().getSerializableExtra(DETAILS);
         if(details != null){
-            mPresenter.start(details);
+            presenter.start(details);
         } else {
-            mPresenter.start(mUrl);
+            presenter.start(mUrl);
         }
 
     }
@@ -304,7 +300,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mPresenter.nearByAttractionPicked(nearbyAttraction);
+                    presenter.nearByAttractionPicked(nearbyAttraction);
                 }
             });
             View v = new View(getApplicationContext());
@@ -347,6 +343,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     @Override
     public void imageClicked(int position) {
-        mPresenter.previewImagePicked(position);
+        presenter.previewImagePicked(position);
     }
 }

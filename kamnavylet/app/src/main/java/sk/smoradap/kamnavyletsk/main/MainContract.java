@@ -12,9 +12,6 @@ import sk.smoradap.kamnavyletsk.model.Item;
 public interface MainContract {
 
     interface View {
-
-        void setPresenter(Presenter presenter);
-        void registerForSingleLocationUpdate(OnLocationUpdatedListener listener);
         void showAttractionDetails(AttractionDetails details);
         void showAttractionDetails(String url);
         void showNearbyAttractions(List<? extends Item> items);
@@ -26,5 +23,6 @@ public interface MainContract {
         void start();
         void attactionPicked(Item item);
         void searchReqested(String query);
+        void setView(View view);
     }
 }

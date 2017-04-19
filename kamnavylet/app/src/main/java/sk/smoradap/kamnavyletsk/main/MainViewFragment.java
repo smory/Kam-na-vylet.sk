@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -42,8 +43,11 @@ import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 @EFragment(R.layout.fragment_main_view)
 public class MainViewFragment extends Fragment implements MainContract.View {
 
-    private static String TAG = "MainViewFragment";
-    private MainContract.Presenter mPresenter;
+    private static String TAG = MainViewFragment.class.getSimpleName();
+
+    @Bean(MainPresenter.class)
+    MainContract.Presenter presenter;
+
     private ItemRecyclerAdapter mItemRecyclerAdapter;
 
     @ViewById(R.id.main_recycler_view)
@@ -56,19 +60,9 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment MainViewFragment.
-     */
-    public static MainViewFragment newInstance() {
-        MainViewFragment fragment = new MainViewFragment();
-        return fragment;
-    }
-
-    @Override
-    public void setPresenter(MainContract.Presenter presenter){
-        mPresenter = presenter;
+    @AfterViews
+    void setupPresenter(){
+        presenter.setView(this);
     }
 
     @AfterViews
@@ -81,7 +75,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         super.onResume();
         Log.d(TAG, "onResume");
         System.out.println("onResume");
-        mPresenter.start();
+        presenter.start();
     }
 
     @Override
@@ -105,7 +99,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.onActionViewCollapsed();
-                mPresenter.searchReqested(query);
+                presenter.searchReqested(query);
                 return false;
             }
 
@@ -133,7 +127,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
                 Cursor c = (Cursor) mSugestionAdapter.getItem(position);
                 System.out.println(c.getString(1));
                 searchView.onActionViewCollapsed();
-                mPresenter.searchReqested(c.getString(1));
+                presenter.searchReqested(c.getString(1));
                 return true;
             }
 
@@ -146,13 +140,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
 
 
-    @Override
-    public void registerForSingleLocationUpdate(OnLocationUpdatedListener listener) {
-        SmartLocation.with(getContext())
-                .location()
-                .oneFix()
-                .start(listener);
-    }
+
 
     @UiThread
     @Override
@@ -178,7 +166,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
             mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items, new ItemRecyclerAdapter.OnItemPickedListener() {
                 @Override
                 public void onItemPicked(Item item) {
-                    mPresenter.attactionPicked(item);
+                    presenter.attactionPicked(item);
                 }
             });
         }

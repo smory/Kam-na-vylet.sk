@@ -16,6 +16,7 @@ public interface DetailsContract {
         void start(AttractionDetails details);
         void nearByAttractionPicked(AttractionDetails attraction);
         void previewImagePicked(int imageIndex);
+        void setView(View view);
     }
 
     interface View {

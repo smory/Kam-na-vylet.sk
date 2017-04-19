@@ -1,6 +1,5 @@
 package sk.smoradap.kamnavyletsk.main;
 
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +17,7 @@ import sk.smoradap.kamnavyletsk.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainViewFragment mFragment;
+    private MainViewFragment fragment;
     private FrameLayout mFragmentHolderLayout;
 
 
@@ -39,14 +38,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mFragmentHolderLayout = (FrameLayout) findViewById(R.id.recycler_holder);
-        mFragment = new MainViewFragment_();
-
-        // initialize presenter
-        new MainPresenter(mFragment, getApplicationContext());
-
-        getSupportFragmentManager().beginTransaction()
-                .add(mFragmentHolderLayout.getId(), mFragment)
-                .commit();
+        if(savedInstanceState == null){
+            fragment = MainViewFragment_.builder().build();
+            getSupportFragmentManager().beginTransaction()
+                    .add(mFragmentHolderLayout.getId(), fragment)
+                    .commit();
+        }
 
         ImageView image = (ImageView) findViewById(R.id.toolbar_image);
         image.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.LIGHTEN);
