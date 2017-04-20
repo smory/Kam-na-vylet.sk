@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:dropDownItemStyle">@style/myDropDownItemStyle</item>
         <item name="android:dropDownListViewStyle">@style/myDropDownListViewStyle</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

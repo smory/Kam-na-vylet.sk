@@ -8,7 +8,7 @@
     <dimen name="search_item_image_size">60dp</dimen>
     <dimen name="item_vertical_padding">4dp</dimen>
 
-    <dimen name="details_header_hight">172dp</dimen>
+    <dimen name="details_header_hight">116dp</dimen>
     <dimen name="details_category_layout_height">32dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
