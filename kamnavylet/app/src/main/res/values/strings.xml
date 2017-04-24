@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">KamNaVylet.sk</string>
     <string name="details">Detaily</string>
-    <string name="more">viac...</string>
-    <string name="less">menej...</string>
+    <string name="more">viac…</string>
+    <string name="less">menej…</string>
     <string name="distance">vzdialenosť:</string>
     <string name="nearby_attractions">Atrakcie v okolí</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="searching">vyhľadávam...</string>
+    <string name="searching">vyhľadávam…</string>
     <string name="title_activity_main">Kam na výlet.sk</string>
     <string name="loading_data">Načítavám údaje</string>
 

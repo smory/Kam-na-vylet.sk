@@ -32,6 +32,7 @@ import java.util.Map;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.base.BaseFragment;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
@@ -292,16 +293,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Override
-    @UiThread
-    public void setBusy(boolean busy) {
-        if(busy){
-            progressLayout.setVisibility(View.VISIBLE);
-        } else {
-            progressLayout.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void showCannotLoadData() {
 
     }
@@ -309,5 +300,10 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Override
     public void imageClicked(int position) {
         presenter.previewImagePicked(position);
+    }
+
+    @Override
+    public DetailsContract.Presenter getPresenter() {
+        return presenter;
     }
 }

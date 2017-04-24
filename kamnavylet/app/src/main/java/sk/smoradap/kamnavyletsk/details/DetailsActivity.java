@@ -36,6 +36,8 @@ import java.util.Map;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.base.BaseActivity;
+import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
@@ -44,7 +46,7 @@ import sk.smoradap.kamnavyletsk.gui.ItemView_;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EActivity(R.layout.activity_details)
-public class DetailsActivity extends AppCompatActivity implements DetailsContract.View,
+public class DetailsActivity extends BaseActivity implements DetailsContract.View,
         ImageRecyclerAdapter.OnImageClickedInterface {
 
     public static final String TAG = DetailsActivity.class.getSimpleName();
@@ -326,15 +328,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         startActivity(i);
     }
 
-    @Override
-    @UiThread
-    public void setBusy(boolean busy) {
-        if(busy){
-            progressLayout.setVisibility(View.VISIBLE);
-        } else {
-            progressLayout.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public void showCannotLoadData() {
@@ -344,5 +337,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override
     public void imageClicked(int position) {
         presenter.previewImagePicked(position);
+    }
+
+
+    @Override
+    public DetailsContract.Presenter getPresenter() {
+        return presenter;
     }
 }

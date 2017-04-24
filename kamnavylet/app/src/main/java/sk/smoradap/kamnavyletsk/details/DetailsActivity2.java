@@ -13,6 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 import sk.smoradap.kamnavyletsk.base.BaseActivity;
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EActivity(R.layout.activity_details2)
@@ -61,9 +62,10 @@ public class DetailsActivity2 extends BaseActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
 
-
-
-
+    @Override
+    public BaseContract.Presenter getPresenter() {
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.api.DetailsProvider;
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
@@ -31,7 +32,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     @Override
     public void start(String url) {
         if(mAttractionDetails == null){
-            view.setBusy(true);
+            view.showBusy(true, context.getString(R.string.loading_data));
             api.loadDetails(url, this);
         } else {
             setUpView(mAttractionDetails);
@@ -67,7 +68,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     }
 
     void setUpView(AttractionDetails details){
-        view.setBusy(true);
+        view.showBusy(true, context.getString(R.string.loading_data));
         view.setTitle(details.getName(), details.getTown(), details.getImageUrls().get(0));
         view.setImagePreviews(details.getImageUrls());
         view.setCategory(details.getCategory());
@@ -80,7 +81,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
             view.setNearByAttractions(mNearbyAttractions);
         }
 
-        view.setBusy(false);
+        view.showBusy(false, null);
     }
 
     private void loadNearbyAttractionDetails(final List<NearbyAttraction> list)  {
@@ -107,5 +108,25 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     @Override
     public void onDetailsFailure(IOException e) {
         view.showCannotLoadData();
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onStop() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
     }
 }

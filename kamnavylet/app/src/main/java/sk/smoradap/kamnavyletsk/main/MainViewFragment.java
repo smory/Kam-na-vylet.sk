@@ -29,6 +29,7 @@ import io.nlopez.smartlocation.SmartLocation;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity;
+import sk.smoradap.kamnavyletsk.details.DetailsActivity2_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
@@ -153,9 +154,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     @UiThread
     @Override
     public void showAttractionDetails(String url){
-        Intent i = new Intent(getContext(), DetailsActivity_.class);
-        i.putExtra(DetailsActivity.URL, url);
-        startActivity(i);
+        DetailsActivity2_.intent(getContext()).url(url).start();
     }
 
     @Override
