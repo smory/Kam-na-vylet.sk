@@ -1,252 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".details.DetailsActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/vpi__background_holo_light"
+    android:fillViewport="false" >
 
-     <FrameLayout
-        android:id="@+id/header"
+    <RelativeLayout
+        tools:context=".details.DetailsActivity"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/details_header_hight"
-        android:background="?attr/colorPrimary">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/base_info"
-            layout="@layout/basic_item_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true" />
-
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/details_category_layout_height"
-            android:id="@+id/ll_category"
-            android:background="@color/material_blue_grey_900"
-            android:layout_gravity="bottom">
+            android:layout_height="@dimen/details_header_hight"
+            android:background="?attr/colorPrimary">
 
-            <TextView
+            <include
+                android:id="@+id/base_info"
+                layout="@layout/basic_item_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:id="@+id/tv_category"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                tools:text="Hrady, zámky, zrúcaniny" />
+                android:paddingLeft="@dimen/padding_base"/>
 
-            <!--<LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/button_panel"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+             <RelativeLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="@dimen/details_category_button_holder_layout_height"
+                 android:layout_gravity="bottom"
+                 android:id="@+id/container_cathegory_buttons">
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:padding="8dp"
-                    app:srcCompat="@drawable/ic_navigation_24dp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/details_category_layout_height"
+                    android:id="@+id/ll_category"
+                    android:background="@color/material_blue_grey_900"
+                    android:layout_alignParentBottom="true">
 
-            </LinearLayout> -->
-        </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:id="@+id/tv_category"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/padding_base"
+                        android:layout_gravity="center_vertical"
+                        tools:text="Hrady, zámky, zrúcaniny" />
 
-    </FrameLayout>
+                </FrameLayout>
 
+                 <LinearLayout
+                     android:id="@+id/button_panel"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentEnd="true"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:layout_weight="1"
+                     android:orientation="horizontal"
+                     android:padding="@dimen/padding_base"
+                     android:visibility="gone">
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="false"
-        android:layout_below="@id/header">
+                     <Button
+                         android:layout_width="wrap_content"
+                         android:layout_height="@dimen/button_details_height"
+                         android:drawableLeft="@drawable/ic_navigation_24dp"
+                         android:minWidth="0dp" />
 
+                 </LinearLayout>
+         </RelativeLayout>
+
+        </FrameLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_images_preview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                android:nestedScrollingEnabled="false"
-                tools:layout_height="@dimen/recycler_image_height">
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:layout_below="@id/header">
 
-            </android.support.v7.widget.RecyclerView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rv_images_preview"
-                android:id="@+id/details_description_card">
-
-                <LinearLayout
-                    android:id="@+id/details_description_layout"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_images_preview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:layout_height="@dimen/recycler_image_height"
+                    tools:listitem="@layout/recycler_image">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/details_description_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/rv_images_preview">
 
-                    <TextView
-                        android:id="@+id/tv_details_description"
+                    <LinearLayout
+                        android:id="@+id/details_description_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:text="Medium Text"
-                        android:maxLines="5"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:visibility="visible"/>
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_base">
 
-                    <TextView
-                        android:id="@+id/tv_details_more_less"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:text="@string/more"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@android:color/holo_blue_dark"
-                        android:visibility="visible"/>
+                        <TextView
+                            android:id="@+id/tv_details_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:ellipsize="end"
+                            android:maxLines="5"
+                            tools:text="@string/description_text_example"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tv_details_more_less"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/more"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/holo_blue_dark"
+                            android:visibility="visible" />
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/details_separator"
-                android:layout_below="@+id/details_description_card"
-                android:background="@drawable/line_separator"
-                android:layout_marginTop="8dp"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/details_separator"
-                android:id="@+id/details_card"
-                android:paddingBottom="4dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/rl_details">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/details_textview"
-                    android:text="@string/details"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/details_table_drop_icon"
-                    android:layout_toRightOf="@+id/details_textview"
-                    android:src="@drawable/expander_open_holo_light"/>
-
-                <sk.smoradap.kamnavyletsk.gui.DetailsTable
+                <View
+                    android:id="@+id/details_separator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/details_textview"
-                    android:id="@+id/details_table"
-                    android:orientation="vertical"
-                    android:visibility="gone"/>
+                    android:layout_below="@+id/details_description_card"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/line_separator" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/details_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/details_separator"
+                    android:paddingBottom="4dp">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_base">
+
+                        <TextView
+                            android:id="@+id/details_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/details"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/details_table_drop_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/details_textview"
+                            android:layout_toRightOf="@+id/details_textview"
+                            android:src="@drawable/expander_open_holo_light" />
+
+                        <sk.smoradap.kamnavyletsk.gui.DetailsTable
+                            android:id="@+id/details_table"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_textview"
+                            android:orientation="vertical"
+                            android:visibility="gone" />
+
+
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <View
+                    android:id="@+id/details_bellow_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/details_card"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/line_separator" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/nearby_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/details_bellow_separator"
+                    android:paddingTop="4dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/nearby_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/nearby_attractions"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/nearby_drop_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/nearby_textview"
+                            android:src="@drawable/expander_open_holo_light" />
+
+                        <LinearLayout
+                            android:id="@+id/nearby_item_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/nearby_textview"
+                            android:orientation="vertical"
+                            android:visibility="visible" />
+
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <View
+                    android:id="@+id/nearby_card_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nearby_card"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/line_separator" />
 
 
             </RelativeLayout>
 
 
+        <include
+            layout="@layout/progress_layout"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/details_bellow_separator"
-                android:layout_below="@+id/details_card"
-                android:background="@drawable/line_separator"
-                android:layout_marginTop="8dp"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:layout_below="@id/details_bellow_separator"
-                android:id="@+id/nearby_card">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/nearby_textview"
-                        android:text="@string/nearby_attractions"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/nearby_drop_icon"
-                        android:layout_toRightOf="@+id/nearby_textview"
-                        android:src="@drawable/expander_open_holo_light"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nearby_textview"
-                        android:id="@+id/nearby_item_layout"
-                        android:orientation="vertical"
-                        android:visibility="visible"/>
-
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/nearby_card_separator"
-                android:layout_below="@+id/nearby_card"
-                android:background="@drawable/line_separator"
-                android:layout_marginTop="8dp"/>
-
-
-        </RelativeLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <include
-        layout="@layout/progress_layout"
-        android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

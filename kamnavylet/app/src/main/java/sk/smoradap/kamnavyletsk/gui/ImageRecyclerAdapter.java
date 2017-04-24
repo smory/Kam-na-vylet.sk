@@ -1,7 +1,6 @@
 package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.io.Serializable;
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
 
 /**
@@ -25,14 +22,14 @@ import sk.smoradap.kamnavyletsk.R;
  */
 public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder> {
 
-    private List<String> mImageUrls;
-    private Context mContext;
-    private OnImageClickedInterface mCallback;
+    private List<String> imageUrls;
+    private Context context;
+    private OnImageClickedInterface callback;
 
     public ImageRecyclerAdapter(Context context, List<String> imageUrls, OnImageClickedInterface callback){
-        this.mImageUrls = imageUrls;
-        mContext = context;
-        mCallback = callback;
+        this.imageUrls = imageUrls;
+        this.context = context;
+        this.callback = callback;
     }
 
     @Override
@@ -45,8 +42,8 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.progressBar.setVisibility(View.VISIBLE);
-        Glide.with(mContext)
-                .load(mImageUrls.get(position))
+        Glide.with(context)
+                .load(imageUrls.get(position))
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -65,8 +62,8 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCallback != null){
-                    mCallback.imageClicked(position);
+                if(callback != null){
+                    callback.imageClicked(position);
                 }
             }
         });
@@ -74,7 +71,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
     @Override
     public int getItemCount() {
-        return mImageUrls.size();
+        return imageUrls.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

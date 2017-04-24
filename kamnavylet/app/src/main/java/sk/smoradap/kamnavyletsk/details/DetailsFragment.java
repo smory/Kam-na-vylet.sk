@@ -1,7 +1,6 @@
 package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +21,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
@@ -113,7 +111,7 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Bean(DetailsPresenter.class)
     DetailsContract.Presenter presenter;
 
-    private ImageRecyclerAdapter mImageAdapter;
+    private ImageRecyclerAdapter imageRecyclerAdapter;
 
     @AfterViews
     void setupPresenter(){
@@ -211,8 +209,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Override
     @UiThread
     public void setImagePreviews(List<String> urls) {
-        mImageAdapter = new ImageRecyclerAdapter(getContext(), urls, this);
-        imageRecyclerView.setAdapter(mImageAdapter);
+        imageRecyclerAdapter = new ImageRecyclerAdapter(getContext(), urls, this);
+        imageRecyclerView.setAdapter(imageRecyclerAdapter);
     }
 
     @Override
