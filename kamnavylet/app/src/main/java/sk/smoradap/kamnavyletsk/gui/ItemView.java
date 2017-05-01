@@ -17,7 +17,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.R;
 
 /**
- * Created by smora on 14.09.2016.
+ * Created by Peter Smorada on 14.09.2016.
  */
 @EViewGroup(R.layout.item_layout)
 public class ItemView extends LinearLayout{
@@ -31,20 +31,6 @@ public class ItemView extends LinearLayout{
     @ViewById(R.id.tv_place)
     TextView place;
 
-    @ViewById(R.id.distance_label)
-    TextView distance_label;
-
-    @ViewById(R.id.distance_info)
-    TextView distance;
-
-    @ViewById(R.id.category_label)
-    TextView category;
-
-    @ViewById(R.id.short_description_text_view)
-    TextView briefDescription;
-
-    @ViewById(R.id.view_to_move_right)
-    View toMoveRight;
 
     public ItemView(Context context) {
         super(context);
@@ -60,11 +46,7 @@ public class ItemView extends LinearLayout{
 
     @AfterViews
     void initialSetup(){
-        setBriefDescription(null);
-        setDistance(null);
-        setCategory(null);
         setIcon(null);
-
         setBackgroundColor(getResources().getColor(android.R.color.white));
     }
 
@@ -87,37 +69,4 @@ public class ItemView extends LinearLayout{
         }
     }
 
-    public void setCategory(String text){
-        if(text == null || text.isEmpty()){
-            category.setText(null);
-            category.setVisibility(View.GONE);
-            toMoveRight.setVisibility(View.GONE);
-        } else {
-            category.setVisibility(View.VISIBLE);
-            category.setText(text);
-            toMoveRight.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void setDistance(String text){
-        if(text == null || text.isEmpty()){
-            distance.setText(null);
-            distance.setVisibility(View.GONE);
-            distance_label.setVisibility(View.GONE);
-        } else {
-            distance.setVisibility(View.VISIBLE);
-            distance.setText(text);
-            distance_label.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void setBriefDescription(String text){
-        if(text == null || text.isEmpty()){
-            briefDescription.setText(null);
-            briefDescription.setVisibility(View.GONE);
-        } else {
-            briefDescription.setVisibility(View.VISIBLE);
-            briefDescription.setText(text);
-        }
-    }
 }

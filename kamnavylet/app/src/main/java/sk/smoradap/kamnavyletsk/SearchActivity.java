@@ -3,15 +3,14 @@ package sk.smoradap.kamnavyletsk;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.support.annotation.RawRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -19,29 +18,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.Arrays;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
-import sk.smoradap.kamnavyletsk.api.PredictionProvider;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.Item;
-import sk.smoradap.kamnavyletsk.model.Prediction;
 import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
-import sk.smoradap.kamnavyletsk.utils.Utils;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.OnSearchResultsListener {
@@ -52,7 +45,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     Toolbar mToolbar;
 
     @ViewById(R.id.search_recycler)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
 
     @ViewById(R.id.progressLayout)
     RelativeLayout mProgressLayout;
@@ -87,6 +80,13 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     public void setUpToolbar(){
         mToolbar.setTitle(mSearchTerm);
         setSupportActionBar(mToolbar);
+    }
+
+    @AfterViews
+    public void addRecyclerDecoration(){
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this,R .drawable.line_separator));
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
                 showAttractionDetails(item.getSourceUrl());
             }
         });
-        mRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         System.out.println("Setting adapter");
         mProgressLayout.setVisibility(View.GONE);
     }

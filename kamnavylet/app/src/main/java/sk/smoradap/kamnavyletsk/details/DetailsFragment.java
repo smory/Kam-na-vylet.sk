@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,7 +33,6 @@ import java.util.Map;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
-import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.base.BaseFragment;
 import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
@@ -84,9 +84,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
 
     @ViewById(R.id.nearby_card)
     CardView nearbyCard;
-
-    @ViewById(R.id.nearby_drop_icon)
-    ImageView ivNearByDropIcon;
 
     @ViewById(R.id.progressLayout)
     RelativeLayout progressLayout;
@@ -181,31 +178,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
 
     }
 
-    @Click(R.id.nearby_card)
-    public void toggleNearByItems(){
-        if(llNearbyAttrationsLayout.getVisibility() == View.VISIBLE){
-
-            slideUpAnimation.setAnimationListener(new AnimationListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    llNearbyAttrationsLayout.setVisibility(View.GONE);
-                }
-
-            });
-            slideUpAnimation.cancel();
-            llNearbyAttrationsLayout.startAnimation(slideUpAnimation);
-            ivNearByDropIcon.startAnimation(rotate180backAnimation);
-
-        } else {
-            ivNearByDropIcon.startAnimation(rotate180Animation);
-            llNearbyAttrationsLayout.setVisibility(View.VISIBLE);
-            llNearbyAttrationsLayout.startAnimation(slideDownAnimation);
-
-        }
-
-    }
-
-
 
     @Override
     @UiThread
@@ -252,6 +224,11 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         llNearbyAttrationsLayout.removeAllViews();
 
         for(final AttractionDetails nearbyAttraction : nearbyAttractions){
+
+            if(llNearbyAttrationsLayout.getChildCount() > 0){
+                LayoutInflater.from(getActivity()).inflate(R.layout.view_separator, llNearbyAttrationsLayout, true);
+            }
+
             final ItemView item = ItemView_.build(getContext());
             item.setName(nearbyAttraction.getName());
             item.setPlace(nearbyAttraction.getTown());
@@ -261,7 +238,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
             }
 
             llNearbyAttrationsLayout.addView(item );
-            System.out.println("adding nearby item");
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -272,8 +248,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
             v.setBackgroundResource(R.drawable.line_separator);
 
         }
-
-        llNearbyAttrationsLayout.setVisibility(View.GONE);
     }
 
     @Override

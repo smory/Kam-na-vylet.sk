@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -24,8 +27,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
-import io.nlopez.smartlocation.SmartLocation;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity;
@@ -36,11 +37,6 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.Item;
 import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 @EFragment(R.layout.fragment_main_view)
 public class MainViewFragment extends Fragment implements MainContract.View {
 
@@ -52,7 +48,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     private ItemRecyclerAdapter mItemRecyclerAdapter;
 
     @ViewById(R.id.main_recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
 
     private ProgressDialog mProgressDialog;
     private SimpleCursorAdapter mSugestionAdapter;
@@ -69,6 +65,13 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     @AfterViews
     public void enableMenu(){
         setHasOptionsMenu(true);
+    }
+
+    @AfterViews
+    public void addRecyclerDecoration(){
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.line_separator));
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
@@ -169,7 +172,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
                 }
             });
         }
-        mRecyclerView.setAdapter(mItemRecyclerAdapter);
+        recyclerView.setAdapter(mItemRecyclerAdapter);
     }
 
     @UiThread
