@@ -64,6 +64,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
     @Override
     public void onDetailsLoaded(AttractionDetails details) {
         mAttractionDetails = details;
+        view.setAttactionDetails(details);
         setUpView(details);
     }
 

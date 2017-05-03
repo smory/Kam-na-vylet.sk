@@ -30,6 +30,7 @@ public interface DetailsContract {
         void showNearbyAttractionDetails(AttractionDetails nearbyAttraction);
         void showFullImagePreviews(List<String> urls, int startIndex);
         void showCannotLoadData();
+        void setAttactionDetails(AttractionDetails details);
 
     }
 

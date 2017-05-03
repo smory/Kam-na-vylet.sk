@@ -52,6 +52,8 @@ public class DetailsActivity2 extends BaseActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        toolbar.setSubtitleTextColor(getResources().getColor(android.R.color.white));
     }
 
     @Override

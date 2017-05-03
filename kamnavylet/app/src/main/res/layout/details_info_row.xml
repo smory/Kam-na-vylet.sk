@@ -2,29 +2,29 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="@style/App.Text.Body1"
             android:id="@+id/tv_param_name"
             android:layout_gravity="center_vertical"
             tools:text="Okres:" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:textAppearance="@style/App.Text.Caption"
             android:id="@+id/tv_param_value"
+            android:lines="3"
             android:layout_gravity="center_vertical"
             tools:text="Stara Lubovna"/>
 
@@ -36,6 +36,6 @@
         android:id="@+id/separator_line"
         android:background="@color/common_google_signin_btn_text_dark_disabled"
         android:visibility="invisible"
-        tools:visibility="visible"/>
+        tools:visibility="gone"/>
 
 </LinearLayout>

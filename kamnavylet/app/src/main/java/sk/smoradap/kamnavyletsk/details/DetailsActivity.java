@@ -279,7 +279,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     public void setDetails(Map<String, String> details) {
         detailsTable.removeAllViews();
         for (Map.Entry<String, String> entry : details.entrySet()) {
-            detailsTable.addRow(entry.getKey(), entry.getValue());
+            detailsTable.add(entry.getKey(), entry.getValue());
         }
     }
 
@@ -343,5 +343,10 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     @Override
     public DetailsContract.Presenter getPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void setAttactionDetails(AttractionDetails details) {
+
     }
 }

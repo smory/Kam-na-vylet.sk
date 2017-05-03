@@ -176,12 +176,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/nearby_card"
-            android:layout_marginTop="@dimen/padding_base">
+            android:layout_marginTop="@dimen/padding_base"
+            android:layout_marginBottom="@dimen/padding_base">
 
             <RelativeLayout
                 android:id="@+id/rl_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding_base2x"
+                android:paddingRight="@dimen/padding_base2x"
+                android:paddingTop="@dimen/padding_base"
+                android:paddingBottom="@dimen/padding_base">
 
                 <TextView
                     android:id="@+id/details_textview"
@@ -189,15 +194,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/details"
                     android:textAppearance="@style/App.Text.Subheading"
-                    android:paddingLeft="@dimen/padding_base2x"/>
-
-                <ImageView
-                    android:id="@+id/details_table_drop_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/details_textview"
-                    android:layout_toRightOf="@+id/details_textview"
-                    android:src="@drawable/expander_open_holo_light" />
+                    android:paddingBottom="@dimen/padding_base"/>
 
                 <sk.smoradap.kamnavyletsk.gui.DetailsTable
                     android:id="@+id/details_table"
@@ -205,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/details_textview"
                     android:orientation="vertical"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </RelativeLayout>
 

@@ -2,6 +2,8 @@ package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -25,6 +27,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
+import org.androidannotations.annotations.res.DimensionPixelSizeRes;
 
 import java.io.Serializable;
 import java.util.List;
@@ -47,10 +50,13 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EFragment(R.layout.fragment_details)
 public class DetailsFragment extends BaseFragment implements DetailsContract.View,
-        ImageRecyclerAdapter.OnImageClickedInterface {
+        ImageRecyclerAdapter.OnImageClickedInterface, NestedScrollView.OnScrollChangeListener {
 
     @ViewById(R.id.rv_images_preview)
     RecyclerView imageRecyclerView;
+
+    @ViewById(R.id.sw_parent)
+    NestedScrollView scrollView;
 
     @ViewById(R.id.tv_details_description)
     TextView detailsTextView;
@@ -76,9 +82,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @ViewById(R.id.details_card)
     CardView detailsCardView;
 
-    @ViewById(R.id.details_table_drop_icon)
-    ImageView detailsDropIcon;
-
     @ViewById(R.id.nearby_item_layout)
     LinearLayout llNearbyAttrationsLayout;
 
@@ -100,6 +103,9 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @AnimationRes(R.anim.slide_up)
     Animation slideUpAnimation;
 
+    @DimensionPixelSizeRes(R.dimen.basic_item_image_size)
+    int headerSize;
+
     @FragmentArg
     String url;
 
@@ -120,6 +126,7 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     void configureViews(){
         imageRecyclerView.setNestedScrollingEnabled(false);
         detailsTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        scrollView.setOnScrollChangeListener(this);
     }
 
     @Override
@@ -151,32 +158,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
 
     }
 
-
-    @Click(R.id.details_card)
-    public void toggleDetailsTable(){
-
-        System.out.println("details card clicked");
-
-        if(detailsTable.getVisibility() == View.VISIBLE){
-            //detailsTable.setVisibility(View.GONE);
-            detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180_back));
-            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-            animation.setAnimationListener(new AnimationListenerAdapter() {
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    detailsTable.setVisibility(View.GONE);
-                }
-
-            });
-            detailsTable.startAnimation(animation);
-        } else {
-            detailsTable.setVisibility(View.VISIBLE);
-            detailsDropIcon.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180));
-            detailsTable.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_down));
-        }
-
-    }
 
 
     @Override
@@ -214,7 +195,7 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     public void setDetails(Map<String, String> details) {
         detailsTable.removeAllViews();
         for (Map.Entry<String, String> entry : details.entrySet()) {
-            detailsTable.addRow(entry.getKey(), entry.getValue());
+            detailsTable.add(entry.getKey(), entry.getValue());
         }
     }
 
@@ -279,5 +260,21 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Override
     public DetailsContract.Presenter getPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if(scrollY > headerSize){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(attractionDetails.getName());
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(attractionDetails.getTown());
+        } else {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(null);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(null);
+        }
+    }
+
+    @Override
+    public void setAttactionDetails(AttractionDetails details) {
+        this.attractionDetails = details;
     }
 }

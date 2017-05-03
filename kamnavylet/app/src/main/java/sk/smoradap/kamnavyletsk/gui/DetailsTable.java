@@ -1,8 +1,10 @@
 package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,9 +15,13 @@ import sk.smoradap.kamnavyletsk.R;
  */
 public class DetailsTable extends LinearLayout {
 
+    public static final String TAG = DetailsTable.class.getSimpleName();
+
     public DetailsTable(Context context) {
         super(context);
     }
+
+
 
     public DetailsTable(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,15 +32,33 @@ public class DetailsTable extends LinearLayout {
     }
 
 
-    public void addRow(String paramName, String paramValue){
-        hideSeparator();
+    public void add(String paramName, String paramValue){
+        // hideSeparator();
 
         View v = inflate(getContext(), R.layout.details_info_row,  null);
         TextView name = (TextView) v.findViewById(R.id.tv_param_name);
         name.setText(paramName);
         TextView value = (TextView) v.findViewById(R.id.tv_param_value);
         value.setText(paramValue);
-        addView(v);
+
+        LinearLayout linearLayout;
+        if(getChildCount() == 0 || ((LinearLayout)getChildAt(getChildCount() -1)).getChildCount() == 2){
+            linearLayout = new LinearLayout(getContext());
+            linearLayout.setOrientation(HORIZONTAL);
+            addView(linearLayout);
+
+        } else {
+            linearLayout = (LinearLayout) getChildAt(getChildCount() - 1);
+        }
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        v.setLayoutParams(params);
+
+        linearLayout.addView(v);
+
+
+        System.out.println("Adding layout " + paramName + " " + paramName);
     }
 
     private void hideSeparator(){
