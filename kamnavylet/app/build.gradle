@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply from: '../config/gradle/quality.gradle'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -44,6 +45,16 @@ android {
                                     detailsActivityName: appName + "-detail-debug"]
         }
     }
+
+    lintOptions {
+        warningsAsErrors false
+        ignoreWarnings false
+        abortOnError true
+        disable 'IconDensities'
+        disable 'IconXmlAndPng'
+        disable 'IconLocation'
+        lintConfig file("../config/quality/lint/lint.xml")
+    }
 }
 
 buildscript {
@@ -56,6 +67,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'io.fabric.tools:gradle:1.+'
     }
+
 }
 
 final supportLibVersion = "25.3.1"
@@ -101,3 +113,4 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }
+

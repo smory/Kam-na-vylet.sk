@@ -1,0 +1,69 @@
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "7.7"
+}
+
+task checkstyle (type: Checkstyle) {
+    description 'Runs Checkstyle inspection against Android sourcesets.'
+    group = 'Code Quality'
+
+    ignoreFailures = false
+    showViolations = false
+    source 'src/main', 'src/release', 'src/androidTest/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    classpath = files()
+    configFile = file("${project.rootDir}/config/quality/checkstyle/sun_checks.xml")
+
+    configProperties.lineWidth = 120
+}
+
+task pmd(type: Pmd) {
+    ruleSetFiles = files("${project.rootDir}/config/quality/pmd/pmd-ruleset.xml")
+    ruleSets = []
+
+    source 'src/main'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/pmd/pmd.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/pmd/pmd.html"
+        }
+    }
+}
+
+task findbugs(type: FindBugs) {
+    effort = "max"
+    reportLevel = "high"
+    excludeFilter = new File("${project.rootDir}/config/quality/findbugs/findbugs-filter.xml")
+    classes = files("$project.buildDir/intermediates/classes/")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$project.buildDir/reports/findbugs/findbugs.html"
+        }
+        xml {
+            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+            xml.withMessages true
+        }
+    }
+
+    classpath = files()
+}

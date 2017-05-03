@@ -40,7 +40,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.progressBar.setVisibility(View.VISIBLE);
         Glide.with(context)
                 .load(imageUrls.get(position))
@@ -63,7 +63,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
             @Override
             public void onClick(View view) {
                 if(callback != null){
-                    callback.imageClicked(position);
+                    callback.imageClicked(holder.getAdapterPosition());
                 }
             }
         });

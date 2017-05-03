@@ -34,7 +34,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(SearchViewHolder holder, final int position) {
+    public void onBindViewHolder(final SearchViewHolder holder, int position) {
         final Item item = mList.get(position);
         holder.item.setIcon(item.getPreviewImageUrl());
         holder.item.setName(item.getName());
@@ -44,7 +44,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
             @Override
             public void onClick(View view) {
                 if(mListener != null){
-                    mListener.onItemPicked(mList.get(position));
+                    mListener.onItemPicked(mList.get(holder.getAdapterPosition()));
                 }
             }
         });
