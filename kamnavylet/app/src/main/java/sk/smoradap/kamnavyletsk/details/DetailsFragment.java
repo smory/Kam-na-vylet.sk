@@ -106,6 +106,9 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @DimensionPixelSizeRes(R.dimen.basic_item_image_size)
     int headerSize;
 
+    @DimensionPixelSizeRes(R.dimen.padding_base2x)
+    int basePadding2x;
+
     @FragmentArg
     String url;
 
@@ -207,7 +210,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         for(final AttractionDetails nearbyAttraction : nearbyAttractions){
 
             if(llNearbyAttrationsLayout.getChildCount() > 0){
-                LayoutInflater.from(getActivity()).inflate(R.layout.view_separator, llNearbyAttrationsLayout, true);
+                View separator = LayoutInflater.from(getActivity()).inflate(R.layout.view_separator, llNearbyAttrationsLayout, true);
+                separator.setPadding(basePadding2x, 0, basePadding2x, 0);
             }
 
             final ItemView item = ItemView_.build(getContext());

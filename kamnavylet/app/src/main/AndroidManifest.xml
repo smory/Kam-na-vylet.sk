@@ -50,6 +50,9 @@
 
         </activity>
 
+        <activity android:name=".ImageBrowseActivity_"
+            android:exported="false" />
+
     </application>
 
 </manifest>

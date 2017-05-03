@@ -146,7 +146,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding_base">
+                android:paddingTop="@dimen/padding_base">
 
                 <TextView
                     android:id="@+id/nearby_textview"
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/nearby_attractions"
                     android:textAppearance="@style/App.Text.Subheading"
-                    android:paddingLeft="@dimen/padding_base" />
+                    android:paddingLeft="@dimen/padding_base2x" />
 
                 <LinearLayout
                     android:id="@+id/nearby_item_layout"
@@ -163,8 +163,7 @@
                     android:layout_below="@+id/nearby_textview"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    tools:layout="@layout/basic_item_layout"
-                    android:paddingLeft="@dimen/padding_base" />
+                    tools:layout="@layout/basic_item_layout" />
 
 
             </RelativeLayout>
