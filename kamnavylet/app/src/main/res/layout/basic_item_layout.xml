@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary" >
 
     <ImageView
         android:layout_width="@dimen/basic_item_image_size"
@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:src="@mipmap/ic_launcher"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/padding_base2x"
         android:padding="2dp"
         android:background="@drawable/circle"/>
 
@@ -32,30 +32,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
+            android:textAppearance="@style/App.Text.Headline"
             android:id="@+id/tv_name"
             android:textColor="@android:color/white"
-            tools:text="Hrad Stara Lubovna"/>
+            tools:text="Hrad Stara Lubovna" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
+            android:textAppearance="@style/App.Text.Subheading"
             android:id="@+id/tv_place"
             android:textColor="@android:color/white"
-            tools:text="Stara Lubovna"/>
+            tools:text="Stara Lubovna" />
 
     </LinearLayout>
-<!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tv_category"
-        android:layout_below="@id/iv_base_icon"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" /> -->
 </RelativeLayout>

@@ -31,4 +31,56 @@
         <item name="android:background">@drawable/selectable_background</item>
     </style>
 
+
+    <!-- Text Views Default Base -->
+    <style name="App.Text.Display4" parent="TextAppearance.AppCompat.Display4">
+        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+    </style>
+
+    <style name="App.Text.Display3" parent="TextAppearance.AppCompat.Display3">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Display2" parent="TextAppearance.AppCompat.Display2">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Display1" parent="TextAppearance.AppCompat.Display1">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Headline" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <style name="App.Text.Subheading" parent="TextAppearance.AppCompat.Subhead">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <style name="App.Text.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Text.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="App.Menu" parent="TextAppearance.AppCompat.Menu"/>
+
+    <style name="App.Button" parent="TextAppearance.AppCompat.Button">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <style name="App.Button.AllCaps" parent="App.Button">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>

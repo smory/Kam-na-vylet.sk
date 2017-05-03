@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 
 import io.fabric.sdk.android.Fabric;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Application na inicializaciu crashlytics a leak canary
@@ -24,5 +25,11 @@ public class KamNaVyletApplication extends Application {
         }
         Fabric.with(this, new Crashlytics());
         LeakCanary.install(this);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 }

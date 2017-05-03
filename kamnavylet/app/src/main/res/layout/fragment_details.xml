@@ -24,8 +24,7 @@
                 android:id="@+id/base_info"
                 layout="@layout/basic_item_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_base"/>
+                android:layout_height="wrap_content"/>
 
              <RelativeLayout
                  android:layout_width="wrap_content"
@@ -45,9 +44,10 @@
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
                         android:id="@+id/tv_category"
-                        android:paddingLeft="@dimen/padding_base"
+                        android:paddingLeft="@dimen/padding_base2x"
                         android:layout_gravity="center_vertical"
-                        tools:text="Hrady, zámky, zrúcaniny" />
+                        tools:text="Hrady, zámky, zrúcaniny"
+                        android:textAppearance="@style/App.Text.Body1"/>
 
                 </FrameLayout>
 
@@ -73,31 +73,43 @@
 
         </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_images_preview"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:layout_height="@dimen/recycler_image_height"
-            tools:listitem="@layout/recycler_image"
-            android:layout_below="@id/header">
+            android:layout_below="@id/header" android:id="@+id/fl_recycler_holder"
+            android:background="@android:color/white">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_images_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:layout_height="@dimen/recycler_image_height"
+                android:paddingLeft="@dimen/padding_base"
+                tools:listitem="@layout/recycler_image" />
+
+        </FrameLayout>
+
+
+
 
         <android.support.v7.widget.CardView
                 android:id="@+id/details_description_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rv_images_preview">
+                android:layout_below="@+id/fl_recycler_holder">
 
                 <LinearLayout
                     android:id="@+id/details_description_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/padding_base">
+                    android:paddingLeft="@dimen/padding_base2x"
+                    android:paddingRight="@dimen/padding_base2x"
+                    android:paddingBottom="@dimen/padding_base"
+                    android:paddingTop="@dimen/padding_base" >
 
                     <TextView
                         android:id="@+id/tv_details_description"
@@ -106,7 +118,7 @@
                         android:ellipsize="end"
                         android:maxLines="5"
                         tools:text="@string/description_text_example"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="@style/App.Text.Body1"
                         android:visibility="visible" />
 
                     <TextView
@@ -115,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/more"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="@style/App.Text.Body1"
                         android:textColor="@android:color/holo_blue_dark"
                         android:visibility="visible" />
 
@@ -141,8 +153,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nearby_attractions"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/App.Text.Subheading"
+                    android:paddingLeft="@dimen/padding_base" />
 
                 <LinearLayout
                     android:id="@+id/nearby_item_layout"
@@ -151,7 +163,8 @@
                     android:layout_below="@+id/nearby_textview"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    tools:layout="@layout/basic_item_layout"/>
+                    tools:layout="@layout/basic_item_layout"
+                    android:paddingLeft="@dimen/padding_base" />
 
 
             </RelativeLayout>
@@ -168,16 +181,15 @@
             <RelativeLayout
                 android:id="@+id/rl_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_base">
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/details_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/details"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/App.Text.Subheading"
+                    android:paddingLeft="@dimen/padding_base2x"/>
 
                 <ImageView
                     android:id="@+id/details_table_drop_icon"

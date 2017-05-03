@@ -1,10 +1,13 @@
 package sk.smoradap.kamnavyletsk.base;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by smorada on 19.4.2017.
@@ -66,5 +69,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         if(getPresenter() != null){
             getPresenter().onPause();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

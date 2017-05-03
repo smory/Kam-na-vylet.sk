@@ -195,7 +195,7 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Override
     @UiThread
     public void setTitle(String mainTitle, String subTitle, String iconUrl) {
-        tvTitle.setText(Html.fromHtml("<b>" + mainTitle + "</b>"));
+        tvTitle.setText(mainTitle);
         tvPlace.setText(subTitle);
 
         Glide.with(this).load(iconUrl)

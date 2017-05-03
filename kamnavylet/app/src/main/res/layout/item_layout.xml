@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/base_info"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:layout_marginTop="@dimen/padding_base"
     android:layout_marginBottom="@dimen/padding_base"
     android:background="?android:attr/selectableItemBackground" >
@@ -25,24 +25,23 @@
         android:layout_toEndOf="@+id/iv_base_icon"
         android:layout_toRightOf="@+id/iv_base_icon"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
+        android:paddingLeft="16dp"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingStart="8dp">
+        android:paddingStart="16dp">
 
         <TextView
             android:id="@+id/tv_name_si"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/secondary_text_default_material_light" />
+            android:textAppearance="@style/App.Text.Subheading" />
 
         <TextView
             android:id="@+id/tv_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="@style/App.Text.Body1"
             android:textColor="@color/secondary_text_default_material_light" />
 
     </LinearLayout>
