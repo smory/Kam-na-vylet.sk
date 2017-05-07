@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,9 @@ public class Utils {
         return Math.round(px);
     }
 
-    public static String loadRawTextResource(int fileId){
+    public static String loadRawTextResource(int fileId) throws UnsupportedEncodingException {
         InputStream inputStream = Resources.getSystem().openRawResource(fileId);
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         StringBuilder builder = new StringBuilder();
 
         try {
@@ -50,9 +51,15 @@ public class Utils {
     }
 
     public static List<String> loadRawTextResourceAsList(Context c, int fileId){
-        InputStream inputStream = c.getResources().openRawResource(fileId);
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
         ArrayList<String> list = new ArrayList<>();
+        InputStream inputStream = c.getResources().openRawResource(fileId);
+
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            Log.w(TAG, "Unable to load local data", e);
+        }
 
         try {
             String line = br.readLine();

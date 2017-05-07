@@ -29,7 +29,7 @@ public class LocalDbBuildTest {
     public void buildAttractionDatabaseAndPreditions()throws IOException {
         int i = 0;
         List<SearchResult> list = SearchProvider.search("poprad", 400, null);
-        PrintWriter wr = new PrintWriter(new File("db.txt"));
+        PrintWriter wr = new PrintWriter(new File("db.txt"), "UTF-8");
         TreeMap<String, String> map = new TreeMap<>();
 
         StringBuilder s = new StringBuilder();
@@ -67,7 +67,7 @@ public class LocalDbBuildTest {
         wr.flush();
         wr.close();
 
-        wr = new PrintWriter(new File("sug.txt"));
+        wr = new PrintWriter(new File("sug.txt"), "UTF-8");
         for(String key : map.keySet()){
             wr.println(key + "\t" + map.get(key));
         }

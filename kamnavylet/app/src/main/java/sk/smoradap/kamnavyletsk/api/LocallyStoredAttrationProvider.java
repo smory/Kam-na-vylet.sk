@@ -42,7 +42,7 @@ public class LocallyStoredAttrationProvider {
     protected static List<Attraction> build(File file){
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            Scanner scanner = new Scanner(file);
+            Scanner scanner = new Scanner(file, "UTF-8");
 
             while (scanner.hasNext()){
                 arrayList.add(scanner.nextLine());
