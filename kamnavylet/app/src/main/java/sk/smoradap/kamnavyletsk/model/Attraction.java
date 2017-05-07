@@ -1,6 +1,5 @@
 package sk.smoradap.kamnavyletsk.model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -110,6 +109,7 @@ public class Attraction implements Item {
     }
 
     @Override
+    @SuppressWarnings("PMD")
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -118,29 +118,34 @@ public class Attraction implements Item {
 
         if (Float.compare(that.longitude, longitude) != 0) return false;
         if (Float.compare(that.latitude, latitude) != 0) return false;
-        if (!name.equals(that.name)) return false;
-        if (!category.equals(that.category)) return false;
-        if (!area.equals(that.area)) return false;
-        if (!district.equals(that.district)) return false;
-        if (!town.equals(that.town)) return false;
-        if (!gps.equals(that.gps)) return false;
-        if (!sourceUrl.equals(that.sourceUrl)) return false;
-        return previewImageUrl.equals(that.previewImageUrl);
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (category != null ? !category.equals(that.category) : that.category != null)
+            return false;
+        if (regions != null ? !regions.equals(that.regions) : that.regions != null) return false;
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (district != null ? !district.equals(that.district) : that.district != null)
+            return false;
+        if (town != null ? !town.equals(that.town) : that.town != null) return false;
+        if (gps != null ? !gps.equals(that.gps) : that.gps != null) return false;
+        if (sourceUrl != null ? !sourceUrl.equals(that.sourceUrl) : that.sourceUrl != null)
+            return false;
+        return previewImageUrl != null ? previewImageUrl.equals(that.previewImageUrl) : that.previewImageUrl == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + category.hashCode();
-        result = 31 * result + area.hashCode();
-        result = 31 * result + district.hashCode();
-        result = 31 * result + town.hashCode();
-        result = 31 * result + gps.hashCode();
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (regions != null ? regions.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
+        result = 31 * result + (town != null ? town.hashCode() : 0);
+        result = 31 * result + (gps != null ? gps.hashCode() : 0);
         result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
         result = 31 * result + (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
-        result = 31 * result + sourceUrl.hashCode();
-        result = 31 * result + previewImageUrl.hashCode();
+        result = 31 * result + (sourceUrl != null ? sourceUrl.hashCode() : 0);
+        result = 31 * result + (previewImageUrl != null ? previewImageUrl.hashCode() : 0);
         return result;
     }
 

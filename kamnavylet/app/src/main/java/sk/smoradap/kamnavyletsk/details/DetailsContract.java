@@ -5,7 +5,6 @@ import java.util.Map;
 
 import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
-import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 /**
  * Created by psmorada on 13.10.2016.

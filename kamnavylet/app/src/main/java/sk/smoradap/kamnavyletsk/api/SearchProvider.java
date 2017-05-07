@@ -13,30 +13,30 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Created by smora on 01.09.2016.
+ * Class provides easier access to search capabilities.
+ * Created by Peter Smorada on 01.09.2016.
  */
+@SuppressWarnings("PMD.GuardLogStatementJavaUtil")
 public class SearchProvider {
-    public static String SEARCH_URL = "http://www.kamnavylet.sk/atrakcie/";
-    public static String BASE_URL = "http://kamnavylet.sk";
+    public static final String SEARCH_URL = "http://www.kamnavylet.sk/atrakcie/";
+    public static final String BASE_URL = "http://kamnavylet.sk";
+
+    private static final Logger LOGGER = Logger.getLogger(SearchProvider.class.getName());
 
     public static List<SearchResult> search(String query, int distance, Category category) throws IOException{
-        List<SearchResult> results = null;
-        try {
-            results = search(query, distance, category, false);
-            if(results == null || results.size() == 0){
-                results = search(query, distance, category, true);
-            }
-        } catch (IOException ioe){
-            throw ioe;
+        List<SearchResult> results = search(query, distance, category, false);
+        if(results == null || results.size() == 0){
+            results = search(query, distance, category, true);
         }
         return results;
-    }
+     }
 
     private static List<SearchResult> search(String query, int distance, Category category,
                                              boolean alternativeUrl) throws IOException{
-        Document document = null;
+        Document document;
         try {
             document = Jsoup.connect(alternativeUrl?
                     createAlternativeSearchUrl(query, distance, 0):
@@ -44,58 +44,58 @@ public class SearchProvider {
         } catch (HttpStatusException se){
             return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Unable to load data: " + e); //NOPMD
             throw e;
         }
 
         List<SearchResult> results = processResponce(document);
 
         int numberOfPages = nuberOfPagesWithResults(document);
-        System.out.println("number of pages: " + numberOfPages);
+        LOGGER.fine("number of pages: " + numberOfPages);
         for(int i = 2; i <= numberOfPages; i++){
             try {
                 document = Jsoup.connect( alternativeUrl?
                         createAlternativeSearchUrl(query, distance,i):
                         createSearchUrl(query, distance, i, category)).get();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.warning("Unable to load data: " + e);
                 continue;
             }
             List<SearchResult> temp = processResponce(document);
             results.addAll(temp);
 
         }
-        System.out.println("number of results: " + results.size());
+        LOGGER.fine("number of results: " + results.size());
         return results;
 
     }
 
     public static void searchWithPartialResultDelivery(String query, int distance, Category category,
                                             OnDataChunkAvailableListener callback) throws IOException{
-        Document document = null;
+        Document document;
         try {
             document = Jsoup.connect(createSearchUrl(query, distance, 0, category)).get();
         } catch (HttpStatusException se){
             return;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Unable to load data: " + e);
             throw e;
         }
 
         List<SearchResult> results = processResponce(document);
         int numberOfPages = nuberOfPagesWithResults(document);
-        callback.DataChunkAvailable(results, 1, numberOfPages);
+        callback.onDataChunkAvailable(results, 1, numberOfPages);
 
-        System.out.println("number of pages: " + numberOfPages);
+        LOGGER.fine("number of pages: " + numberOfPages);
         for(int i = 2; i <= numberOfPages; i++){
             try {
                 document = Jsoup.connect(createSearchUrl(query, distance, i, category)).get();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.warning("Unable to load data: " + e);
                 continue;
             }
             List<SearchResult> temp = processResponce(document);
-            callback.DataChunkAvailable(temp, i, numberOfPages);
+            callback.onDataChunkAvailable(temp, i, numberOfPages);
 
         }
     }
@@ -106,12 +106,13 @@ public class SearchProvider {
         try {
             url.append(URLEncoder.encode(query, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.warning("Unsuported encoding: " + e);
             url.append(query);
         }
-        url.append("?o=" + distance);
-        url.append(pageNumber > 0? "&page=" + pageNumber : "");
-        System.out.println(url);
+        url.append("?o=")
+                .append(distance)
+                .append(pageNumber > 0? "&page=" + pageNumber : "");
+        LOGGER.fine(url.toString());
         return url.toString();
     }
 
@@ -121,18 +122,18 @@ public class SearchProvider {
         try {
             url.append(URLEncoder.encode(query, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.warning("Unsuported encoding: " + e);
             url.append(query);
         }
-        url.append(pageNumber > 0? "&page=" + pageNumber : "");
-        url.append("&x=0&y=0");
-        System.out.println(url);
+        url.append(pageNumber > 0? "&page=" + pageNumber : "")
+                .append("&x=0&y=0");
+        LOGGER.fine(url.toString());
         return url.toString();
     }
 
     private static int nuberOfPagesWithResults(Document document){
         Elements pages = document.select("center div.flickr_pagination a:not(.next_page)");
-        System.out.println(pages);
+        LOGGER.fine(pages.toString());
         if (pages.isEmpty()){
             return 1;
         } else {
@@ -145,7 +146,7 @@ public class SearchProvider {
         LinkedList<SearchResult> results = new LinkedList<>();
         for(Element result : searchResults){
             SearchResult sr = parseResult(result);
-            System.out.println(sr);
+            LOGGER.fine(sr.toString());
             results.add(sr);
         }
 
@@ -179,8 +180,7 @@ public class SearchProvider {
         try {
             return goalPreview.getElementsByClass("di").get(0).text();
         }catch (Exception e){
-            //e.printStackTrace();
-            return null;
+              return null;
         }
     }
 
@@ -214,7 +214,7 @@ public class SearchProvider {
     }
 
     public interface OnDataChunkAvailableListener {
-        public void DataChunkAvailable(List<SearchResult> chunk, int chunkNumber, int numberOfChunks);
+        void onDataChunkAvailable(List<SearchResult> chunk, int chunkNumber, int numberOfChunks);
     }
 
 }

@@ -2,11 +2,9 @@ package sk.smoradap.kamnavyletsk.model;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by smora on 01.09.2016.

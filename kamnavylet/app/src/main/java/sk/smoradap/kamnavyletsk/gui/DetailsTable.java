@@ -1,8 +1,8 @@
 package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
-import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -33,7 +33,6 @@ public class DetailsTable extends LinearLayout {
 
 
     public void add(String paramName, String paramValue){
-        // hideSeparator();
 
         View v = inflate(getContext(), R.layout.details_info_row,  null);
         TextView name = (TextView) v.findViewById(R.id.tv_param_name);
@@ -56,15 +55,7 @@ public class DetailsTable extends LinearLayout {
         v.setLayoutParams(params);
 
         linearLayout.addView(v);
-
-
-        System.out.println("Adding layout " + paramName + " " + paramName);
+        Log.v(TAG, "Adding layout " + paramName + " " + paramName);
     }
 
-    private void hideSeparator(){
-        if(getChildCount() > 0) {
-            View lastView = getChildAt(getChildCount() -1);
-            lastView.findViewById(R.id.separator_line).setVisibility(VISIBLE);
-        }
-    }
 }

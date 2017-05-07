@@ -3,15 +3,14 @@ package sk.smoradap.kamnavyletsk.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -19,6 +18,8 @@ import java.util.regex.Pattern;
  * Created by smora on 14.09.2016.
  */
 public class Utils {
+
+    public static final String TAG = Utils.class.getSimpleName();
 
     public static int convertDpToPixel(float dp){
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -33,14 +34,16 @@ public class Utils {
 
         try {
             String line = br.readLine();
-            if(line != null) builder.append(line);
+            if(line != null){
+                builder.append(line);
+            }
             while((line = br.readLine()) != null){
                 builder.append(line);
             }
 
             br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w(TAG, e);
         }
 
         return builder.toString();
@@ -53,14 +56,16 @@ public class Utils {
 
         try {
             String line = br.readLine();
-            if(line != null) list.add(line);
+            if(line != null) {
+                list.add(line);
+            }
             while((line = br.readLine()) != null){
                 list.add(line);
             }
 
             br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w(TAG, e);
         }
 
         return list;

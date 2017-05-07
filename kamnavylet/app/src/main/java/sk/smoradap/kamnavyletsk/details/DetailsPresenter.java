@@ -1,6 +1,7 @@
 package sk.smoradap.kamnavyletsk.details;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -94,7 +95,7 @@ public class DetailsPresenter implements  DetailsContract.Presenter, KamNaVyletA
                         AttractionDetails ad = DetailsProvider.details(na.getUrl());
                         mNearbyAttractions.add(ad);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.w(this.getClass().getSimpleName(), e);
                     }
                 }
                 view.setNearByAttractions(mNearbyAttractions);

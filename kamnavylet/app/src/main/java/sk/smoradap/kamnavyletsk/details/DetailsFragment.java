@@ -11,7 +11,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +36,6 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.base.BaseFragment;
-import sk.smoradap.kamnavyletsk.gui.AnimationListenerAdapter;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.gui.ItemView;
@@ -237,7 +235,7 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
 
     @Override
     public void showNearbyAttractionDetails(AttractionDetails nearbyAttraction) {
-        DetailsActivity2_.intent(getContext())
+        DetailsActivity_.intent(getContext())
                 .url(nearbyAttraction.getSourceUrl())
                 .attractionDetails(nearbyAttraction)
                 .start();

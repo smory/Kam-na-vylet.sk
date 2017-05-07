@@ -10,22 +10,24 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Created by smora on 02.09.2016.
+ * Class to provide cathegories
+ * Created by Peter Smorada on 02.09.2016.
  */
-public class CategoryProvider {
+class CategoryProvider {
 
-    public static final String BASE_URL = "http://kamnavylet.sk";
+    private static final String BASE_URL = "http://kamnavylet.sk";
+    private static final Logger LOGGER = Logger.getLogger(CategoryProvider.class.getName());
 
-    public static List<Category> loadCategories(){
+    static List<Category> loadCategories(){
 
-        Document document = null;
+        Document document;
         try{
             document = Jsoup.connect(BASE_URL).get();
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+             return null;
         }
 
         return parseCategories(document);
@@ -43,7 +45,7 @@ public class CategoryProvider {
             category.setUrlString(categoryUrlPart.replace("/atrakcie/", ""));
             list.add(category);
         }
-        System.out.println(list);
+        LOGGER.fine(list.toString());
         return list;
     }
 }

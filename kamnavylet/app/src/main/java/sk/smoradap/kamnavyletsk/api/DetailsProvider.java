@@ -9,28 +9,27 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.NearbyAttraction;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
- * Created by smora on 01.09.2016.
+ * Class to load details of attraction
+ * Created by Peter Smorada on 01.09.2016.
  */
 public class DetailsProvider {
 
-    public static String BASE_URL = "http://kamnavylet.sk";
+    private static final String BASE_URL = "http://kamnavylet.sk";
+    private static final Logger LOGGER = Logger.getLogger(DetailsProvider.class.getName());
 
     public static AttractionDetails details(String url) throws IOException{
 
         AttractionDetails ad = new AttractionDetails();
         ad.setSourceUrl(url);
 
-        Document doc = null;
-
+        Document doc;
         try {
             doc = Jsoup.connect(url).get();
         } catch(HttpStatusException se){
             return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
         }
 
         setLocationDetails(ad, doc);
@@ -49,7 +48,7 @@ public class DetailsProvider {
         for(int i = 0; i < links.size(); i++){
             NearbyAttraction nearbyAttraction = new NearbyAttraction();
             nearbyAttraction.setName((links.get(i).text()));
-            nearbyAttraction.setUrl(BASE_URL + links.get(i).attr("href"));
+            nearbyAttraction.setUrl(BASE_URL + links.get(i).attr("href")); //NOPMD
             nearbyAttraction.setDistance(distances.get(i).text());
             ad.addNearbyAttraction(nearbyAttraction);
         }
@@ -61,7 +60,7 @@ public class DetailsProvider {
         Elements elements = doc.select("div.ib a");
         for(Element el : elements){
             ad.addImageUrl(BASE_URL + el.attr("href"));
-            System.out.println(el.attr("href"));
+            LOGGER.fine(el.attr("href"));
         }
 
         if(ad.getImageUrls().size() == 0){
@@ -82,20 +81,20 @@ public class DetailsProvider {
         desc = desc.replaceAll("<p>", "<br/><br/>");
         desc = desc.replaceAll("<\\s*/p>", "").trim();
 
-        System.out.println(desc);
+        LOGGER.fine(desc);
         ad.setDescription(desc);
     }
 
     private static void setLocationDetails(AttractionDetails ad, Document doc){
 
         Elements elements = doc.select("div.lh div.onerow");
-        System.out.println(elements);
+        LOGGER.fine(elements.toString());
         for(Element e : elements){
             String info = e.select("b").get(0).text();
             Elements forValue = e.select("span");
             String value = forValue.size( )> 0? forValue.get(0).text(): null;
-            //System.out.println(info);
-            //System.out.println(value);
+            //LOGGER.fine(info);
+            //LOGGER.fine(value);
             switch (info){
                 case "Kategória:":
                     ad.setCategory(value);
@@ -119,14 +118,16 @@ public class DetailsProvider {
                     ad.setEmail(value);
                     break;
                 case "GPS:":
-                    value = value.replace(" mapa", "");
+                    if(value != null) {
+                        value = value.replace(" mapa", "");
+                    }
                     ad.setGps(value);
                     break;
                 case "Telefón:":
-                    //System.out.println(e.select("div#phone").get(0).text());
+                    //LOGGER.fine(e.select("div#phone").get(0).text());
                     continue;
                 case "WWW:":
-                    System.out.println(e.select("a").get(0).attr("href"));
+                    LOGGER.fine(e.select("a").get(0).attr("href"));
                     ad.setWebSite(e.select("a").get(0).attr("href"));
             }
             ad.addDetailsPair(info, value);

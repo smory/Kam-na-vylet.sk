@@ -57,7 +57,7 @@ public class SearchTest {
         int iliterations = 0;
 
         @Override
-        public void DataChunkAvailable(List<SearchResult> chunk, int chunkNumber, int numberOfChunks) {
+        public void onDataChunkAvailable(List<SearchResult> chunk, int chunkNumber, int numberOfChunks) {
             this.numberOfChunks = numberOfChunks;
             iliterations++;
             System.out.println("iteration: " + iliterations);

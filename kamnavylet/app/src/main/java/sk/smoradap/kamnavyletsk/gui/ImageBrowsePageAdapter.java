@@ -2,6 +2,7 @@ package sk.smoradap.kamnavyletsk.gui;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import sk.smoradap.kamnavyletsk.R;
  * Created by psmorada on 16.09.2016.
  */
 public class ImageBrowsePageAdapter extends PagerAdapter {
+
+    public static final String TAG = ImageBrowsePageAdapter.class.getSimpleName();
 
     List<String> mUrls;
     Context mCcontext;
@@ -58,7 +61,7 @@ public class ImageBrowsePageAdapter extends PagerAdapter {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
-                        e.printStackTrace();
+                        Log.w(TAG, e);
                         return false;
                     }
 

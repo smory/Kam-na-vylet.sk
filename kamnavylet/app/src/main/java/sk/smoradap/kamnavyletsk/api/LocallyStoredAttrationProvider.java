@@ -8,18 +8,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.model.Attraction;
 import sk.smoradap.kamnavyletsk.utils.Utils;
 
 /**
- * Created by psmorada on 19.10.2016.
+ * Class to get information from locally stored data
+ * Created by Peter Smorada on 19.10.2016.
  */
 public class LocallyStoredAttrationProvider {
 
     private static LocallyStoredAttrationProvider provider;
     private List<Attraction> attractions;
+    private static final Logger LOGGER = Logger.getLogger(LocallyStoredAttrationProvider.class.getName());
 
     public static LocallyStoredAttrationProvider getInstance(Context context){
         if(provider == null){
@@ -31,7 +34,7 @@ public class LocallyStoredAttrationProvider {
         return provider;
     }
 
-    static List<Attraction> build(Context context){
+    private static List<Attraction> build(Context context){
         List<String> lines = Utils.loadRawTextResourceAsList(context, R.raw.db);
         return parseLines(lines);
     }
@@ -48,14 +51,14 @@ public class LocallyStoredAttrationProvider {
             scanner.close();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.warning("File was not found");
         }
 
         return parseLines(arrayList);
 
     }
 
-    static List<Attraction> parseLines(List<String> lines){
+    private static List<Attraction> parseLines(List<String> lines){
         ArrayList<Attraction> a = new ArrayList<>();
 
         for(String line: lines){

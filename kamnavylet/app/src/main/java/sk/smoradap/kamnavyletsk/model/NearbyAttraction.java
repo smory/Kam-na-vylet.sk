@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class NearbyAttraction implements Serializable {
 
     private String name;
-    private String Url;
+    private String url;
     private String distance;
 
     public String getName() {
@@ -20,11 +20,11 @@ public class NearbyAttraction implements Serializable {
     }
 
     public String getUrl() {
-        return Url;
+        return url;
     }
 
     public void setUrl(String url) {
-        Url = url;
+        this.url = url;
     }
 
     public String getDistance() {
@@ -39,7 +39,7 @@ public class NearbyAttraction implements Serializable {
     public String toString() {
         return "NearbyAttraction{" +
                 "name='" + name + '\'' +
-                ", Url='" + Url + '\'' +
+                ", url='" + url + '\'' +
                 ", distance='" + distance + '\'' +
                 '}';
     }

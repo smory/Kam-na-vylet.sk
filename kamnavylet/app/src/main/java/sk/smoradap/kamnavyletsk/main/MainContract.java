@@ -2,7 +2,6 @@ package sk.smoradap.kamnavyletsk.main;
 
 import java.util.List;
 
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 import sk.smoradap.kamnavyletsk.model.Item;
 

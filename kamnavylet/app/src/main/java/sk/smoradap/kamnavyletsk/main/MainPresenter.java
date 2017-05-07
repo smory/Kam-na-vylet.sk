@@ -44,10 +44,9 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
     @Override
     public void onLocationUpdated(Location location) {
         Log.d(TAG, "Received location update: " + location);
-        System.out.println("Received location update: " + location);
         LocallyStoredAttrationProvider p = LocallyStoredAttrationProvider.getInstance(context);
         List<Attraction> attractions = GpsUtils.getAtractionsInRadius(location, p.getAttractions(), 10d);
-        System.out.println(attractions);
+        Log.v(TAG, "Atractions in radius: " + attractions);
         view.showNearbyAttractions(attractions);
         view.showBusy(false);
     }

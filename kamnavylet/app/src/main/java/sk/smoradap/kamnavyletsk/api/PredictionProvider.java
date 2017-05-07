@@ -12,26 +12,27 @@ import sk.smoradap.kamnavyletsk.model.Prediction;
 import sk.smoradap.kamnavyletsk.utils.Utils;
 
 /**
- * Created by psmorada on 21.10.2016.
+ * Class to provide prediction for search queries.
+ * Created by Peter Smorada on 21.10.2016.
  */
 public class PredictionProvider {
 
-    private static PredictionProvider mProvider;
-    private Map<String, List<Prediction>> mPredictionMap = new HashMap<>();
+    private static PredictionProvider predictionProvider;
+    private Map<String, List<Prediction>> preditionMap = new HashMap<>();
 
     public static PredictionProvider getInstance(Context context){
 
-        if(mProvider == null){
-            mProvider = build(context);
+        if(predictionProvider == null){
+            predictionProvider = build(context);
         }
 
-        return mProvider;
+        return predictionProvider;
     }
 
     private static PredictionProvider build(Context context){
         String[] lines = Utils.loadRawTextResourceAsArray(context, R.raw.predictions);
         PredictionProvider provider = new PredictionProvider();
-        Map<String,List<Prediction>> predictionMap = provider.mPredictionMap;
+        Map<String,List<Prediction>> predictionMap = provider.preditionMap;
         for(String line : lines){
             Prediction prediction = parseLine(line);
 
@@ -57,7 +58,7 @@ public class PredictionProvider {
         new Thread(r).start();
     }
 
-    static Prediction parseLine(String line){
+    private static Prediction parseLine(String line){
         Prediction predition = new Prediction();
         String[] a = line.split("\t");
         predition.setPredictionString(a[0]);
@@ -70,7 +71,7 @@ public class PredictionProvider {
         String standardized = Utils.stripAccents(string).toLowerCase();
         List<Prediction> list = new ArrayList<>();
         String firstLetter = string.substring(0, 1);
-        List<Prediction> startingWithLetterPreditions = mPredictionMap.get(firstLetter);
+        List<Prediction> startingWithLetterPreditions = preditionMap.get(firstLetter);
 
         if(startingWithLetterPreditions == null){
             return list;

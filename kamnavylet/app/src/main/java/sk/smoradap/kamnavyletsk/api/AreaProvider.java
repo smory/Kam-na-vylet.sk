@@ -10,22 +10,24 @@ import sk.smoradap.kamnavyletsk.model.District;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Created by smora on 02.09.2016.
+ * Class to load areas
+ * Created by Peter Smoarada on 02.09.2016.
  */
-public class AreaProvider {
+class AreaProvider {
 
-    public static final String BASE_URL = "http://kamnavylet.sk";
+    private static final String BASE_URL = "http://kamnavylet.sk";
+    private static final Logger LOGGER = Logger.getLogger(AreaProvider.class.getName());
 
-    public static List<Area> loadAreas(){
+    static List<Area> loadAreas(){
 
-        Document document = null;
-
+        Document document;
         try {
             document = Jsoup.connect(BASE_URL).get();
         } catch (IOException e){
-            e.printStackTrace();
+            LOGGER.warning("Could not load areas: " + e); //NOPMD
             return null;
         }
 
@@ -35,7 +37,7 @@ public class AreaProvider {
     private static List<Area> parseAreas(Document document){
         List<Area> areas = new LinkedList<>();
         Elements a = document.select("table#rlist td");
-        System.out.println(a);
+        LOGGER.fine(a.toString());
         for(Element e : a){
             Area area = new Area();
             area.setName(e.getElementsByTag("h2").get(0).text());
@@ -48,7 +50,7 @@ public class AreaProvider {
             }
             areas.add(area);
         }
-        System.out.println(areas);
+        LOGGER.fine(areas.toString());
         return areas;
     }
 }

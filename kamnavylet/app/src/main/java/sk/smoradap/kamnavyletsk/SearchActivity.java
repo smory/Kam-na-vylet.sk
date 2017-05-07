@@ -29,7 +29,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
-import sk.smoradap.kamnavyletsk.details.DetailsActivity;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.Item;
@@ -38,6 +37,8 @@ import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.OnSearchResultsListener {
+
+    public static final String TAG = SearchActivity.class.getSimpleName();
 
     public static final String SEARCH_TERM = "term";
 
@@ -136,7 +137,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor c = (Cursor) mSugestionAdapter.getItem(position);
-                System.out.println(c.getString(1));
                 mSearchTerm = c.getString(1);
                 searchView.setQuery(c.getString(1), true);
                 return true;
@@ -168,7 +168,6 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
             }
         });
         recyclerView.setAdapter(adapter);
-        System.out.println("Setting adapter");
         mProgressLayout.setVisibility(View.GONE);
     }
 
@@ -179,8 +178,8 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
 
     @UiThread
     public void showAttractionDetails(String url){
-        Intent i = new Intent(this, DetailsActivity_.class);
-        i.putExtra(DetailsActivity.URL, url);
-        startActivity(i);
+        DetailsActivity_.intent(this)
+                .url(url)
+                .start();
     }
 }

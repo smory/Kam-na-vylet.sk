@@ -9,12 +9,17 @@ import sk.smoradap.kamnavyletsk.model.SearchResult;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Created by smora on 01.09.2016.
+ * Class for easy access to kamnavylet.sk database
+ * Created by Peter Smorada on 01.09.2016.
  */
 @EBean
+@SuppressWarnings("PMD.GuardLogStatementJavaUtil")
 public class KamNaVyletApi {
+
+    private static final Logger LOGGER = Logger.getLogger(KamNaVyletApi.class.getName());
 
     public void search(final String place, final int distance, final Category category,
                                final OnSearchResultsListener callback){
@@ -37,7 +42,7 @@ public class KamNaVyletApi {
         try {
             return SearchProvider.search(place, distance, category);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Faild to perform search: " + e);
             return null;
         }
     }
@@ -61,7 +66,7 @@ public class KamNaVyletApi {
         try {
             return DetailsProvider.details(url);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Failed to load details:" + e);
             return null;
         }
 

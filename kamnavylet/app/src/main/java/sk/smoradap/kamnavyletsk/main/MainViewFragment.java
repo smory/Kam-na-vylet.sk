@@ -11,7 +11,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -29,8 +28,6 @@ import java.util.List;
 
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
-import sk.smoradap.kamnavyletsk.details.DetailsActivity;
-import sk.smoradap.kamnavyletsk.details.DetailsActivity2_;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.model.AttractionDetails;
@@ -40,7 +37,7 @@ import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 @EFragment(R.layout.fragment_main_view)
 public class MainViewFragment extends Fragment implements MainContract.View {
 
-    private static String TAG = MainViewFragment.class.getSimpleName();
+    private static final String TAG = MainViewFragment.class.getSimpleName();
 
     @Bean(MainPresenter.class)
     MainContract.Presenter presenter;
@@ -78,7 +75,6 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     public void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
-        System.out.println("onResume");
         presenter.start();
     }
 
@@ -129,7 +125,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor c = (Cursor) mSugestionAdapter.getItem(position);
-                System.out.println(c.getString(1));
+                Log.v(TAG, "String 1 from cursor" + c.getString(1));
                 searchView.onActionViewCollapsed();
                 presenter.searchReqested(c.getString(1));
                 return true;
@@ -149,15 +145,18 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     @UiThread
     @Override
     public void showAttractionDetails(AttractionDetails details) {
-        Intent i = new Intent(getContext(), DetailsActivity_.class);
-        i.putExtra(DetailsActivity.DETAILS, details);
-        startActivity(i);
+        DetailsActivity_.intent(this)
+                .attractionDetails(details)
+                .start();
+
     }
 
     @UiThread
     @Override
     public void showAttractionDetails(String url){
-        DetailsActivity2_.intent(getContext()).url(url).start();
+        DetailsActivity_.intent(getContext())
+                .url(url)
+                .start();
     }
 
     @Override

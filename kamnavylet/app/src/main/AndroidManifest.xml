@@ -39,7 +39,7 @@
 
         </activity>
 
-        <activity android:name=".details.DetailsActivity2_"
+        <activity android:name=".details.DetailsActivity_"
             android:exported="true"
             android:label="${detailsActivityName}">
 
