@@ -13,6 +13,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -24,7 +26,16 @@ public class SearchProvider {
     public static final String SEARCH_URL = "http://www.kamnavylet.sk/atrakcie/";
     public static final String BASE_URL = "http://kamnavylet.sk";
 
-    private static final Logger LOGGER = Logger.getLogger(SearchProvider.class.getName());
+    private static final Logger LOGGER;
+
+    static {
+        System.out.println("Setting logger");
+        LOGGER = Logger.getLogger(SearchProvider.class.getName());
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.ALL);
+        LOGGER.addHandler(consoleHandler);
+        LOGGER.setLevel(Level.FINEST);
+    }
 
     public static List<SearchResult> search(String query, int distance, Category category) throws IOException{
         List<SearchResult> results = search(query, distance, category, false);
@@ -38,10 +49,16 @@ public class SearchProvider {
                                              boolean alternativeUrl) throws IOException{
         Document document;
         try {
-            document = Jsoup.connect(alternativeUrl?
+            String url = alternativeUrl?
                     createAlternativeSearchUrl(query, distance, 0):
-                    createSearchUrl(query, distance, 0, category)).get();
+                    createSearchUrl(query, distance, 0, category);
+
+            LOGGER.fine(String.format("Using alternative URL: %b", alternativeUrl));
+            LOGGER.finest(String.format("Search url: %s", url));
+            document = Jsoup.connect(url).get();
+
         } catch (HttpStatusException se){
+            LOGGER.log(Level.WARNING, "No results", se);
             return null;
         } catch (IOException e) {
             LOGGER.warning("Unable to load data: " + e); //NOPMD
@@ -101,14 +118,10 @@ public class SearchProvider {
     }
 
     private static String createSearchUrl(String query, int distance, int pageNumber, Category category){
+
         StringBuilder url = new StringBuilder(SEARCH_URL);
         url.append(category == null? "" : category.getUrlString() + "/");
-        try {
-            url.append(URLEncoder.encode(query, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.warning("Unsuported encoding: " + e);
-            url.append(query);
-        }
+        url.append(query);
         url.append("?o=")
                 .append(distance)
                 .append(pageNumber > 0? "&page=" + pageNumber : "");
@@ -119,12 +132,7 @@ public class SearchProvider {
     private static String createAlternativeSearchUrl(String query, int distance, int pageNumber){
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append("/search?q=");
-        try {
-            url.append(URLEncoder.encode(query, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.warning("Unsuported encoding: " + e);
-            url.append(query);
-        }
+        url.append(query);
         url.append(pageNumber > 0? "&page=" + pageNumber : "")
                 .append("&x=0&y=0");
         LOGGER.fine(url.toString());

@@ -73,7 +73,7 @@
         <item name="fontPath">fonts/Roboto-Regular.ttf</item>
     </style>
 
-    <style name="App.Menu" parent="TextAppearance.AppCompat.Menu"/>
+    <style name="App.Menu" parent="TextAppearance.AppCompat.Menu" />
 
     <style name="App.Button" parent="TextAppearance.AppCompat.Button">
         <item name="fontPath">fonts/Roboto-Medium.ttf</item>

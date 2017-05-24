@@ -26,10 +26,10 @@ public class KamNaVyletApplication extends Application {
         Fabric.with(this, new Crashlytics());
         LeakCanary.install(this);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+//                .setFontAttrId(R.attr.fontPath)
+//                .build()
+//        );
     }
 }
