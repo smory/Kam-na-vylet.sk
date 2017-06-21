@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.DividerItemDecoration;
@@ -28,10 +31,10 @@ import java.util.List;
 
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.SearchActivity_;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
-import sk.smoradap.kamnavyletsk.model.AttractionDetails;
-import sk.smoradap.kamnavyletsk.model.Item;
 import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 
 @EFragment(R.layout.fragment_main_view)
@@ -63,6 +66,7 @@ public class MainViewFragment extends Fragment implements MainContract.View {
     public void enableMenu(){
         setHasOptionsMenu(true);
     }
+
 
     @AfterViews
     public void addRecyclerDecoration(){
@@ -144,9 +148,9 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
     @UiThread
     @Override
-    public void showAttractionDetails(AttractionDetails details) {
+    public void showAttractionDetails(Attraction attraction) {
         DetailsActivity_.intent(this)
-                .attractionDetails(details)
+                .attraction(attraction)
                 .start();
 
     }
@@ -161,12 +165,12 @@ public class MainViewFragment extends Fragment implements MainContract.View {
 
     @Override
     @UiThread
-    public void showNearbyAttractions(List<? extends Item> items) {
+    public void showNearbyAttractions(List<? extends BaseAttractionInfo> info) {
         Log.v(TAG, "Setting nearby attraction recycler adapter");
         if(mItemRecyclerAdapter == null){
-            mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), items, new ItemRecyclerAdapter.OnItemPickedListener() {
+            mItemRecyclerAdapter = new ItemRecyclerAdapter(getContext(), info, new ItemRecyclerAdapter.OnItemPickedListener() {
                 @Override
-                public void onItemPicked(Item item) {
+                public void onItemPicked(BaseAttractionInfo item) {
                     presenter.attactionPicked(item);
                 }
             });
@@ -196,4 +200,5 @@ public class MainViewFragment extends Fragment implements MainContract.View {
         i.putExtra(SearchActivity_.SEARCH_TERM, query);
         startActivity(i);
     }
+
 }

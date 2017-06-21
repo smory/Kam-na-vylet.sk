@@ -15,9 +15,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class KamNaVyletApplication extends Application {
 
 
+    private static KamNaVyletApplication application;
+
     @Override
     public void onCreate(){
         super.onCreate();
+        application = this;
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
@@ -31,5 +34,9 @@ public class KamNaVyletApplication extends Application {
 //                .setFontAttrId(R.attr.fontPath)
 //                .build()
 //        );
+    }
+
+    public static KamNaVyletApplication getApplication() {
+        return application;
     }
 }

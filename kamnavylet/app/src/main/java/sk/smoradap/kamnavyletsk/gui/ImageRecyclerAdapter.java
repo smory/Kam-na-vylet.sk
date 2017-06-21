@@ -13,9 +13,12 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.api.model.Photo;
 
 /**
  * Created by smora on 05.09.2016.
@@ -26,10 +29,13 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
     private Context context;
     private OnImageClickedInterface callback;
 
-    public ImageRecyclerAdapter(Context context, List<String> imageUrls, OnImageClickedInterface callback){
-        this.imageUrls = imageUrls;
+    public ImageRecyclerAdapter(Context context, Collection<? extends Photo> photos, OnImageClickedInterface callback){
         this.context = context;
         this.callback = callback;
+        this.imageUrls = new ArrayList<>();
+        for(Photo photo : photos){
+            imageUrls.add(photo.getUrl());
+        }
     }
 
     @Override

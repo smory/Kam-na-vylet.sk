@@ -29,10 +29,11 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
+import sk.smoradap.kamnavyletsk.api.model.SearchResult;
+import sk.smoradap.kamnavyletsk.base.KamNaVyletApiBean;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
-import sk.smoradap.kamnavyletsk.model.Item;
-import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.utils.SuggestionsUtils;
 
 @EActivity(R.layout.activity_search)
@@ -52,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     RelativeLayout mProgressLayout;
 
     @Bean
-    KamNaVyletApi api;
+    KamNaVyletApiBean api;
 
     @Extra(SEARCH_TERM)
     String mSearchTerm;
@@ -163,7 +164,7 @@ public class SearchActivity extends AppCompatActivity implements KamNaVyletApi.O
     public void onSearchResults(List<SearchResult> results) {
         ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(this, results, new ItemRecyclerAdapter.OnItemPickedListener() {
             @Override
-            public void onItemPicked(Item item) {
+            public void onItemPicked(BaseAttractionInfo item) {
                 showAttractionDetails(item.getSourceUrl());
             }
         });

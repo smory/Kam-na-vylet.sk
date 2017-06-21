@@ -9,7 +9,8 @@ import org.androidannotations.annotations.RootContext;
 import java.util.List;
 
 import sk.smoradap.kamnavyletsk.api.KamNaVyletApi;
-import sk.smoradap.kamnavyletsk.model.SearchResult;
+import sk.smoradap.kamnavyletsk.api.model.SearchResult;
+import sk.smoradap.kamnavyletsk.base.KamNaVyletApiBean;
 import sk.smoradap.kamnavyletsk.suggestions.SimpleSuggestionProvider;
 import sk.smoradap.kamnavyletsk.suggestions.SuggestionProvider;
 
@@ -26,7 +27,7 @@ public class MainPresenter2 implements MainContract2.Presenter {
     SuggestionProvider suggestionProvider;
 
     @Bean
-    KamNaVyletApi api;
+    KamNaVyletApiBean api;
 
     MainContract2.SearchView searchView;
     MainContract2.ListView listView;

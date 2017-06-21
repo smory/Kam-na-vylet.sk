@@ -12,8 +12,8 @@ import java.util.List;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 import sk.smoradap.kamnavyletsk.api.LocallyStoredAttrationProvider;
-import sk.smoradap.kamnavyletsk.model.Attraction;
-import sk.smoradap.kamnavyletsk.model.Item;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
 import sk.smoradap.kamnavyletsk.utils.GpsUtils;
 
 /**
@@ -36,8 +36,8 @@ public class MainPresenter implements MainContract.Presenter, OnLocationUpdatedL
     }
 
     @Override
-    public void attactionPicked(Item item) {
-        view.showAttractionDetails(item.getSourceUrl());
+    public void attactionPicked(BaseAttractionInfo info) {
+        view.showAttractionDetails(info.getSourceUrl());
     }
 
 

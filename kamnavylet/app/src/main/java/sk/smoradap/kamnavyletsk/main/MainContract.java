@@ -2,8 +2,8 @@ package sk.smoradap.kamnavyletsk.main;
 
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.model.AttractionDetails;
-import sk.smoradap.kamnavyletsk.model.Item;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
 
 /**
  * Created by psmorada on 17.10.2016.
@@ -11,17 +11,24 @@ import sk.smoradap.kamnavyletsk.model.Item;
 public interface MainContract {
 
     interface View {
-        void showAttractionDetails(AttractionDetails details);
+        void showAttractionDetails(Attraction attraction);
+
         void showAttractionDetails(String url);
-        void showNearbyAttractions(List<? extends Item> items);
+
+        void showNearbyAttractions(List<? extends BaseAttractionInfo> items);
+
         void showBusy(boolean busy);
+
         void performSearch(String query);
     }
 
     interface Presenter {
         void start();
-        void attactionPicked(Item item);
+
+        void attactionPicked(BaseAttractionInfo item);
+
         void searchReqested(String query);
+
         void setView(View view);
     }
 }

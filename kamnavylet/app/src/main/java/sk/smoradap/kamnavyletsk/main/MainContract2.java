@@ -2,8 +2,8 @@ package sk.smoradap.kamnavyletsk.main;
 
 import java.util.List;
 
+import sk.smoradap.kamnavyletsk.api.model.SearchResult;
 import sk.smoradap.kamnavyletsk.base.BaseContract;
-import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.suggestions.model.Suggestion;
 
 /**

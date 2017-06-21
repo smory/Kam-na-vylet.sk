@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.model.Item;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
 
 /**
  * Created by psmorada on 19.09.2016.
@@ -15,11 +15,11 @@ import sk.smoradap.kamnavyletsk.model.Item;
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.SearchViewHolder> {
 
     private Context mContext;
-    private List<? extends Item> mList;
+    private List<? extends BaseAttractionInfo> mList;
     private OnItemPickedListener mListener;
 
 
-    public ItemRecyclerAdapter(Context context, List<? extends Item> list, OnItemPickedListener listener){
+    public ItemRecyclerAdapter(Context context, List<? extends BaseAttractionInfo> list, OnItemPickedListener listener){
         mContext = context;
         mList = list;
         mListener = listener;
@@ -35,7 +35,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final SearchViewHolder holder, int position) {
-        final Item item = mList.get(position);
+        final BaseAttractionInfo item = mList.get(position);
         holder.item.setIcon(item.getPreviewImageUrl());
         holder.item.setName(item.getName());
         holder.item.setPlace(item.getTown());
@@ -72,6 +72,6 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     }
 
     public interface OnItemPickedListener {
-        void onItemPicked(Item item);
+        void onItemPicked(BaseAttractionInfo item);
     }
 }

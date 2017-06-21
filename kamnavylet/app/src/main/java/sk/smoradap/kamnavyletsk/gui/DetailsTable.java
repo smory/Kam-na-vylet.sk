@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.api.model.DetailType;
 
 /**
  * Created by Peter Smorada on 10.09.2016.
@@ -32,7 +35,7 @@ public class DetailsTable extends LinearLayout {
     }
 
 
-    public void add(String paramName, String paramValue){
+    public void add(String paramName, String paramValue, final DetailType type){
 
         View v = inflate(getContext(), R.layout.details_info_row,  null);
         TextView name = (TextView) v.findViewById(R.id.tv_param_name);
@@ -56,6 +59,12 @@ public class DetailsTable extends LinearLayout {
 
         linearLayout.addView(v);
         Log.v(TAG, "Adding layout " + paramName + " " + paramName);
+        linearLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(type);
+            }
+        });
     }
 
 }

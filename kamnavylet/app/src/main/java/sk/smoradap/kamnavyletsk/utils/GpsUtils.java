@@ -5,7 +5,8 @@ import android.location.Location;
 import java.util.LinkedList;
 import java.util.List;
 
-import sk.smoradap.kamnavyletsk.model.Attraction;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
+
 
 /**
  * Created by psmorada on 19.10.2016.
@@ -29,7 +30,7 @@ public class GpsUtils {
     }
 
     public static double distanceFrom(Location loc, Attraction attraction){
-        return distFrom(loc.getLatitude(), loc.getLongitude(), attraction.getLatitude(), attraction.getLongitude());
+        return distFrom(loc.getLatitude(), loc.getLongitude(), Double.parseDouble(attraction.getLatitude()), Double.parseDouble(attraction.getLongitude()));
     }
 
     public static List<Attraction> getAtractionsInRadius(Location loc, List<Attraction> attractions, double radiusInKm){

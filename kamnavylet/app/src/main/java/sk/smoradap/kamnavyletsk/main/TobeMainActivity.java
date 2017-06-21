@@ -1,6 +1,13 @@
 package sk.smoradap.kamnavyletsk.main;
 
+import android.content.ClipData;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +29,13 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
+import sk.smoradap.kamnavyletsk.api.model.SearchResult;
 import sk.smoradap.kamnavyletsk.base.BaseActivity;
 import sk.smoradap.kamnavyletsk.base.BaseContract;
 import sk.smoradap.kamnavyletsk.R;
 import sk.smoradap.kamnavyletsk.details.DetailsActivity_;
 import sk.smoradap.kamnavyletsk.gui.ItemRecyclerAdapter;
-import sk.smoradap.kamnavyletsk.model.Item;
-import sk.smoradap.kamnavyletsk.model.SearchResult;
 import sk.smoradap.kamnavyletsk.suggestions.SimpleSuggestionProvider;
 import sk.smoradap.kamnavyletsk.suggestions.SuggestionProvider;
 import sk.smoradap.kamnavyletsk.suggestions.model.Suggestion;
@@ -47,6 +54,12 @@ public class TobeMainActivity extends BaseActivity implements MainContract2.List
 
     @ViewById(R.id.floating_search_view)
     FloatingSearchView floatingSearchView;
+
+    @ViewById(R.id.pager)
+    ViewPager pager;
+
+    @ViewById(R.id.tabs)
+    TabLayout tabLayout;
 
     @Bean(SimpleSuggestionProvider.class)
     SuggestionProvider suggestionProvider;
@@ -93,12 +106,19 @@ public class TobeMainActivity extends BaseActivity implements MainContract2.List
         });
     }
 
+    @AfterViews
+    void setupPager() {
+        pager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(pager);
+        Log.d(TAG, "setting pager");
+    }
+
     @Override
     @UiThread
     public void showAttractions(List<SearchResult> results) {
         ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(this, results, new ItemRecyclerAdapter.OnItemPickedListener() {
             @Override
-            public void onItemPicked(Item item) {
+            public void onItemPicked(BaseAttractionInfo item) {
                 DetailsActivity_.intent(TobeMainActivity.this)
                         .url(item.getSourceUrl())
                         .start();
@@ -135,5 +155,32 @@ public class TobeMainActivity extends BaseActivity implements MainContract2.List
     @UiThread
     public void clearQuery() {
         floatingSearchView.clearQuery();
+    }
+
+    public static class MyAdapter extends FragmentStatePagerAdapter {
+
+        final int NUM_ITEMS = 3;
+
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return new Fragment();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                default:
+                    return "test fasfafas";
+            }
+        }
     }
 }

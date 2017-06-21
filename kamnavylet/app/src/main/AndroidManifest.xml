@@ -27,17 +27,6 @@
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".main.MainActivity"
-            android:label="${mainActivityName}"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".details.DetailsActivity_"
             android:exported="true"
             android:label="${detailsActivityName}">
@@ -51,20 +40,16 @@
         <activity
             android:name=".ImageBrowseActivity_"
             android:exported="false" />
-
         <activity
-            android:name=".main.Main2Activity"
-            android:label="@string/title_activity_main2"
+            android:name=".main.TobeMainActivity_"
+            android:exported="true"
+            android:label="@string/title_activity_main2">
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".main.TobeMainActivity_"
-            android:exported="true"/>
-
     </application>
 
 </manifest>

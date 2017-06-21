@@ -2,14 +2,18 @@ package sk.smoradap.kamnavyletsk.details;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,18 +33,25 @@ import org.androidannotations.annotations.res.AnimationRes;
 import org.androidannotations.annotations.res.DimensionPixelSizeRes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import sk.smoradap.kamnavyletsk.ImageBrowseActivity_;
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
+import sk.smoradap.kamnavyletsk.api.model.BaseAttractionInfo;
+import sk.smoradap.kamnavyletsk.api.model.DetailType;
+import sk.smoradap.kamnavyletsk.api.model.Photo;
 import sk.smoradap.kamnavyletsk.base.BaseFragment;
 import sk.smoradap.kamnavyletsk.gui.DetailsTable;
 import sk.smoradap.kamnavyletsk.gui.ImageRecyclerAdapter;
 import sk.smoradap.kamnavyletsk.gui.ItemView;
 import sk.smoradap.kamnavyletsk.gui.ItemView_;
-import sk.smoradap.kamnavyletsk.model.AttractionDetails;
+import sk.smoradap.kamnavyletsk.utils.StringResolver;
 
 /**
  * Created by Peter Smorada on 19.4.2017.
@@ -48,7 +59,12 @@ import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EFragment(R.layout.fragment_details)
 public class DetailsFragment extends BaseFragment implements DetailsContract.View,
-        ImageRecyclerAdapter.OnImageClickedInterface, NestedScrollView.OnScrollChangeListener {
+        ImageRecyclerAdapter.OnImageClickedInterface, NestedScrollView.OnScrollChangeListener,
+        AppBarLayout.OnOffsetChangedListener {
+
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.5f;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
 
     @ViewById(R.id.rv_images_preview)
     RecyclerView imageRecyclerView;
@@ -89,6 +105,24 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @ViewById(R.id.progressLayout)
     RelativeLayout progressLayout;
 
+    @ViewById(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @ViewById(R.id.appbar)
+    AppBarLayout appBarLayout;
+
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
+
+    @ViewById(R.id.ll_toolbar_title_holder)
+    LinearLayout llToolbarTitleHolder;
+
+    @ViewById
+    TextView tvToolbarTitle;
+
+    @ViewById
+    TextView tvToolbarSubtitle;
+
     @AnimationRes(R.anim.rotate_180)
     Animation rotate180Animation;
 
@@ -111,31 +145,39 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     String url;
 
     @FragmentArg
-    AttractionDetails attractionDetails;
+    Attraction attraction;
 
     @Bean(DetailsPresenter.class)
     DetailsContract.Presenter presenter;
 
     private ImageRecyclerAdapter imageRecyclerAdapter;
 
+    private boolean visibleToolbarTitle = false;
+    private boolean visibleTitle = true;
+
     @AfterViews
-    void setupPresenter(){
+    void setupPresenter() {
         presenter.setView(this);
     }
 
     @AfterViews
-    void configureViews(){
+    void configureViews() {
         imageRecyclerView.setNestedScrollingEnabled(false);
         detailsTextView.setMovementMethod(LinkMovementMethod.getInstance());
         scrollView.setOnScrollChangeListener(this);
+        appBarLayout.addOnOffsetChangedListener(this);
+
+        //toolbar.setTitle("");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
-        if(attractionDetails != null){
-            presenter.start(attractionDetails);
+        if (attraction != null) {
+            presenter.start(attraction);
         } else {
             presenter.start(url);
         }
@@ -143,10 +185,10 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Click(R.id.details_description_layout)
-    void descriptionToggle(){
+    void descriptionToggle() {
 
         ObjectAnimator animator;
-        if(detailsTextView.getMaxLines() == 5){
+        if (detailsTextView.getMaxLines() == 5) {
             animator = ObjectAnimator.ofInt(detailsTextView, "maxLines", 5, detailsTextView.getLineCount());
             detailsMoreLessTextVew.setText(getString(R.string.less));
         } else {
@@ -160,11 +202,10 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
 
-
     @Override
     @UiThread
-    public void setImagePreviews(List<String> urls) {
-        imageRecyclerAdapter = new ImageRecyclerAdapter(getContext(), urls, this);
+    public void setImagePreviews(Collection<? extends Photo> photos) {
+        imageRecyclerAdapter = new ImageRecyclerAdapter(getContext(), photos, this);
         imageRecyclerView.setAdapter(imageRecyclerAdapter);
     }
 
@@ -179,6 +220,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     public void setTitle(String mainTitle, String subTitle, String iconUrl) {
         tvTitle.setText(mainTitle);
         tvPlace.setText(subTitle);
+        tvToolbarTitle.setText(mainTitle);
+        tvToolbarSubtitle.setText(subTitle);
 
         Glide.with(this).load(iconUrl)
                 .bitmapTransform(new CropCircleTransformation(getContext()))
@@ -191,23 +234,23 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         tvCategory.setText(category);
     }
 
+
     @Override
     @UiThread
-    public void setDetails(Map<String, String> details) {
-        detailsTable.removeAllViews();
-        for (Map.Entry<String, String> entry : details.entrySet()) {
-            detailsTable.add(entry.getKey(), entry.getValue());
+    public void setDetail(DetailType type, String detailValue) {
+        if(detailsTable != null) {
+            detailsTable.add(StringResolver.getDetailDescription(type), detailValue, type);
         }
     }
 
     @Override
     @UiThread
-    public void setNearByAttractions(List<AttractionDetails> nearbyAttractions) {
+    public void setNearByAttractions(List<? extends BaseAttractionInfo> nearbyAttractions) {
         llNearbyAttrationsLayout.removeAllViews();
 
-        for(final AttractionDetails nearbyAttraction : nearbyAttractions){
+        for (final BaseAttractionInfo nearbyAttraction : nearbyAttractions) {
 
-            if(llNearbyAttrationsLayout.getChildCount() > 0){
+            if (llNearbyAttrationsLayout.getChildCount() > 0) {
                 View separator = LayoutInflater.from(getActivity()).inflate(R.layout.view_separator, llNearbyAttrationsLayout, true);
                 separator.setPadding(basePadding2x, 0, basePadding2x, 0);
             }
@@ -216,11 +259,11 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
             item.setName(nearbyAttraction.getName());
             item.setPlace(nearbyAttraction.getTown());
 
-            if(!nearbyAttraction.getImageUrls().isEmpty()){
-                item.setIcon(nearbyAttraction.getImageUrls().get(0));
+            if (nearbyAttraction.getPreviewImageUrl() != null) {
+                item.setIcon(nearbyAttraction.getPreviewImageUrl());
             }
 
-            llNearbyAttrationsLayout.addView(item );
+            llNearbyAttrationsLayout.addView(item);
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -234,15 +277,19 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Override
-    public void showNearbyAttractionDetails(AttractionDetails nearbyAttraction) {
+    public void showNearbyAttractionDetails(BaseAttractionInfo nearbyAttraction) {
         DetailsActivity_.intent(getContext())
                 .url(nearbyAttraction.getSourceUrl())
-                .attractionDetails(nearbyAttraction)
+//                .attraction(nearbyAttraction)
                 .start();
     }
 
     @Override
-    public void showFullImagePreviews(List<String> urls, int startIndex) {
+    public void showFullImagePreviews(Collection<? extends Photo> photos, int startIndex) {
+        ArrayList<String> urls = new ArrayList<>();
+        for(Photo photo : photos){
+            urls.add(photo.getUrl());
+        }
         Intent i = new Intent(getContext(), ImageBrowseActivity_.class);
         i.putExtra(ImageBrowseActivity_.IMAGE_URLS, (Serializable) urls);
         i.putExtra(ImageBrowseActivity_.PAGER_POSITION, startIndex);
@@ -266,17 +313,75 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
 
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        if(scrollY > headerSize){
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(attractionDetails.getName());
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(attractionDetails.getTown());
-        } else {
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(null);
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(null);
-        }
+//        if (scrollY > headerSize) {
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(attraction.getName());
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(attraction.getTown());
+//        } else {
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(null);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(null);
+//        }
     }
 
     @Override
-    public void setAttactionDetails(AttractionDetails details) {
-        this.attractionDetails = details;
+    public void setAttactionDetails(Attraction attraction) {
+        this.attraction = attraction;
+    }
+
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
+        v.setVisibility(View.VISIBLE);
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
+    }
+
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+
+            if (!visibleToolbarTitle) {
+                startAlphaAnimation(llToolbarTitleHolder, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                visibleToolbarTitle = true;
+            }
+
+        } else {
+
+            if (visibleToolbarTitle) {
+                startAlphaAnimation(llToolbarTitleHolder, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                visibleToolbarTitle = false;
+            }
+        }
+    }
+
+
+    private void handleAlphaOnTitle(float percentage) {
+        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            if (visibleTitle) {
+                startAlphaAnimation(tvTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                startAlphaAnimation(tvPlace, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                startAlphaAnimation(ivBaseIcon, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                visibleTitle = false;
+            }
+
+        } else {
+            if (!visibleTitle) {
+                startAlphaAnimation(tvTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                startAlphaAnimation(tvPlace, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                startAlphaAnimation(ivBaseIcon, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                visibleTitle = true;
+            }
+        }
+    }
+
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+        handleAlphaOnTitle(percentage);
+        handleToolbarTitleVisibility(percentage);
     }
 }

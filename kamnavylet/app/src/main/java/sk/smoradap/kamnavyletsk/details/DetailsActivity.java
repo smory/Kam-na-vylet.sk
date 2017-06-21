@@ -11,9 +11,9 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import sk.smoradap.kamnavyletsk.R;
+import sk.smoradap.kamnavyletsk.api.model.Attraction;
 import sk.smoradap.kamnavyletsk.base.BaseActivity;
 import sk.smoradap.kamnavyletsk.base.BaseContract;
-import sk.smoradap.kamnavyletsk.model.AttractionDetails;
 
 @EActivity(R.layout.activity_details2)
 public class DetailsActivity extends BaseActivity {
@@ -25,17 +25,17 @@ public class DetailsActivity extends BaseActivity {
     String url;
 
     @Extra
-    AttractionDetails attractionDetails;
+    Attraction attraction;
 
     private String testUrl = "http://www.kamnavylet.sk/atrakcia/hrad-lubovna-stara-lubovna";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             Fragment fragment = DetailsFragment_.builder()
-                    .url(url == null?  testUrl: url)
-                    .attractionDetails(attractionDetails)
+                    .url(url == null ? testUrl : url)
+                    .attraction(attraction)
                     .build();
 
             getSupportFragmentManager()
@@ -47,17 +47,17 @@ public class DetailsActivity extends BaseActivity {
     }
 
     @AfterViews
-    void setupToolbar(){
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        toolbar.setSubtitleTextColor(getResources().getColor(android.R.color.white));
+    void setupToolbar() {
+//        toolbar.setTitle("");
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+//        toolbar.setSubtitleTextColor(getResources().getColor(android.R.color.white));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             this.finish();
             return true;
         } else {

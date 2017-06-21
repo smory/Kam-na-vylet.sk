@@ -15,6 +15,18 @@ Hrad je pomerne zachovaný a sú v ňom umiestnené zaujímavé expozície Ľubo
 otváracie hodiny a vstupné (podržte myš vľavo hore nad info)</string>
     <string name="avatar">Avatar</string>
 
+    <string name="detail_phone">Telefón</string>
+    <string name="detail_address">Adresa</string>
+    <string name="detail_email">Email</string>
+    <string name="detail_area">Kraj</string>
+    <string name="detail_district">Okres</string>
+    <string name="detail_town">Mesto</string>
+    <string name="detail_region">Región</string>
+    <string name="detail_gps">GPS</string>
+    <string name="detail_category">Kategória</string>
+    <string name="detail_web_site">Web</string>
+    <string name="detail_name">Názov</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
